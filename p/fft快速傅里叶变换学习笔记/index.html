@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="FFT 学习笔记">
+<title>FFT快速傅里叶变换学习笔记</title>
+
+<link rel='canonical' href='//localhost:1313/p/fft%E5%BF%AB%E9%80%9F%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/'>
+
+<link rel="stylesheet" href="/scss/style.min.e8c7fca7d1c9294aa7a4f3426c225ee26540f7d94e39be0b5a4a5c8a49ca5a25.css"><meta property='og:title' content="FFT快速傅里叶变换学习笔记">
+<meta property='og:description' content="FFT 学习笔记">
+<meta property='og:url' content='//localhost:1313/p/fft%E5%BF%AB%E9%80%9F%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/'>
+<meta property='og:site_name' content='栽种绝处的花'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2021-08-06T17:12:00&#43;00:00'/><meta property='article:modified_time' content='2021-08-06T17:12:00&#43;00:00'/>
+<meta name="twitter:title" content="FFT快速傅里叶变换学习笔记">
+<meta name="twitter:description" content="FFT 学习笔记">
+  
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/ava_hu668245b64ce40d4563d8a8edc8c4124d_81190_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="//localhost:1313/">栽种绝处的花</a></h1>
+            <h2 class="site-description">I was so much older then, I&#39;m younger than that now.</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="//localhost:1313/en/" >English</option>
+                                
+                                    <option value="//localhost:1313/" selected>中文</option>
+                                
+                                    <option value="//localhost:1313/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#前置知识">前置知识</a></li>
+    <li><a href="#fft-简述">FFT 简述</a></li>
+    <li><a href="#卷积">卷积</a></li>
+    <li><a href="#多项式的表示">多项式的表示</a>
+      <ol>
+        <li><a href="#多项式的系数表示">多项式的系数表示</a></li>
+        <li><a href="#多项式的点值表示">多项式的点值表示</a></li>
+      </ol>
+    </li>
+    <li><a href="#基本复数运算">基本复数运算</a></li>
+    <li><a href="#单位根">单位根</a>
+      <ol>
+        <li><a href="#概述">概述</a></li>
+        <li><a href="#性质">性质</a></li>
+      </ol>
+    </li>
+    <li><a href="#dft-与-idft-概述">DFT 与 IDFT 概述</a></li>
+    <li><a href="#fft-快速傅里叶变换">FFT 快速傅里叶变换</a>
+      <ol>
+        <li><a href="#dft系数表示转化成点值表示">DFT（系数表示转化成点值表示）</a></li>
+        <li><a href="#idft-点值表示转化成系数表示">IDFT （点值表示转化成系数表示）</a></li>
+      </ol>
+    </li>
+    <li><a href="#代码实现">代码实现</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/fft%E5%BF%AB%E9%80%9F%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">FFT快速傅里叶变换学习笔记</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            FFT 学习笔记
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2021-08-06</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 6 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="fft-快速傅里叶变换学习笔记">FFT 快速傅里叶变换学习笔记
+</h1><h2 id="前言">前言
+</h2><p>考虑到时间及能力有限，并且诸位大佬写的学习笔记已经是十分详尽，本人目前不可能也不打算写一篇详细度超越各位先人的学习笔记，只是帮助自己理清思路，整理过程并且贯彻一些证明。</p>
+<p>自然文章中会有诸多不妥之处，希望各位不吝赐教。</p>
+<p>部分比较简单的前置知识就跳过了。</p>
+<h2 id="前置知识">前置知识
+</h2><ol>
+<li>
+<p>复数基本知识</p>
+</li>
+<li>
+<p>弧度制与三角函数</p>
+</li>
+<li>
+<p>耐心稳定的心态</p>
+</li>
+</ol>
+<h2 id="fft-简述">FFT 简述
+</h2><p>FFT（Fast Fourier Transformation），中文名是 “<strong>快速傅里叶离散变换</strong>”。</p>
+<p>作用是：以 $\mathcal{O(n\log n)}$ 的时间复杂度计算多项式乘法。</p>
+<p>在 OI 中的应用：利用卷积思想，化乘为加，加速多项式乘法计算。</p>
+<h2 id="卷积">卷积
+</h2><p>形如 $C[k]=\sum\limits_{i\oplus j=k}A[i]B[j]$ 的式子称为卷积。</p>
+<p>多项式乘法就是加法卷积。</p>
+<h2 id="多项式的表示">多项式的表示
+</h2><p>多项式指的是单项式相加组成的代数式。</p>
+<h3 id="多项式的系数表示">多项式的系数表示
+</h3><p>每一项单项式都有其对应的系数，将系数提炼出来就得到了多项式的系数表示。</p>
+<p>一般的，我们把一个 $n-1$ 次的 $n$ 项多项式表示为：</p>
+<p>$$f(x)=\sum\limits_{i=0}^{n-1}a_i x^i=a_0x^0+a_1x^1+a_2x^2&hellip;+a_{n-1}x^{n-1}$$</p>
+<p>系数表示即为：</p>
+<p>$$f(x)={a_0.a_1,a_2&hellip;a_{n-1}}$$</p>
+<p>对于两个 $n$ 项多项式卷积，那么需要枚举每一对系数的乘积结果，复杂度 $\mathcal{O(n^2)}$。</p>
+<h3 id="多项式的点值表示">多项式的点值表示
+</h3><p>给定 $n+1$ 个互不相同的点，我们可以唯一确定一个 $n$ 次多项式函数。</p>
+<p>可以使用 $n+1$ 个点值（有序数对）来描述一个多项式。</p>
+<p>点值表示即为 ：</p>
+<p>$$f(x)={(x_0,f(x_0)),(x_1,f(x_1)),(x_2,f(x_2))&hellip;(x_n,f(x_n) )}$$</p>
+<p>进行乘法即为函数值相乘，复杂度 $\mathcal{O(n)}$。</p>
+<p>点值表示远快于暴力卷积。</p>
+<h2 id="基本复数运算">基本复数运算
+</h2><p>说是不讲复数，但是怎么样还是应该说一说。</p>
+<p>复数相加为实部虚部对应相加。</p>
+<p>相减同理。</p>
+<p>相乘形式为：</p>
+<p>$$(a+bi)\times (c+di)=ac+adi+bci+bdi^2=(ac-bd)+(ad+bc)i$$</p>
+<p>相除形式为：</p>
+<p>$$\dfrac{a+bi}{c+di}=\dfrac{(a+bi)(c-di)}{(c+di)(c-di)}=\dfrac{(ac+bd)+(bc-ad)i}{c^2+d^2}=\dfrac{ac+bd}{c^2+d^2}+\dfrac{bc-ad}{c^2+d^2}$$</p>
+<p>复数相乘还有一个几何意义：模相乘，角相加。</p>
+<p>具体地，$(a_1,\theta_1)(a_2,\theta_2)=(a_1a_2,\theta_1+\theta_2)$。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">Complex</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">double</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Complex</span><span class="p">(){}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Complex</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">_x</span><span class="p">,</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">_y</span><span class="p">)</span><span class="o">:</span><span class="n">x</span><span class="p">(</span><span class="n">_x</span><span class="p">),</span><span class="n">y</span><span class="p">(</span><span class="n">_y</span><span class="p">){};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kr">inline</span> <span class="n">Complex</span> <span class="k">operator</span> <span class="o">+</span> <span class="p">(</span><span class="k">const</span> <span class="n">Complex</span> <span class="o">&amp;</span><span class="n">a</span><span class="p">)</span><span class="k">const</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nf">Complex</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="o">+</span><span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kr">inline</span> <span class="n">Complex</span> <span class="k">operator</span> <span class="o">-</span> <span class="p">(</span><span class="k">const</span> <span class="n">Complex</span> <span class="o">&amp;</span><span class="n">a</span><span class="p">)</span><span class="k">const</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nf">Complex</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="o">-</span><span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kr">inline</span> <span class="n">Complex</span> <span class="k">operator</span> <span class="o">*</span> <span class="p">(</span><span class="k">const</span> <span class="n">Complex</span> <span class="o">&amp;</span><span class="n">a</span><span class="p">)</span><span class="k">const</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nf">Complex</span><span class="p">(</span><span class="n">x</span><span class="o">*</span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="o">-</span><span class="n">y</span><span class="o">*</span><span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="p">,</span><span class="n">x</span><span class="o">*</span><span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="o">+</span><span class="n">y</span><span class="o">*</span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kr">inline</span> <span class="n">Complex</span> <span class="k">operator</span> <span class="o">/</span> <span class="p">(</span><span class="k">const</span> <span class="n">Complex</span> <span class="o">&amp;</span><span class="n">a</span><span class="p">)</span><span class="k">const</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">double</span> <span class="n">tmp</span><span class="o">=</span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="o">*</span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="o">+</span><span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="o">*</span><span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nf">Complex</span><span class="p">((</span><span class="n">x</span><span class="o">*</span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="o">*</span><span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="p">)</span><span class="o">/</span><span class="n">tmp</span><span class="p">,(</span><span class="n">y</span><span class="o">*</span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="o">-</span><span class="n">x</span><span class="o">*</span><span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="p">)</span><span class="o">/</span><span class="n">tmp</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span><span class="n">f</span><span class="p">[</span><span class="n">maxn</span><span class="p">],</span><span class="n">p</span><span class="p">[</span><span class="n">maxn</span><span class="p">];</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="单位根">单位根
+</h2><h3 id="概述">概述
+</h3><blockquote>
+<p>$n$ 次单位根 $\omega_n^k$ 是 $n$ 次幂为 $1$ 的复数，即方程 $x^n=1$ 的复数解。</p>
+</blockquote>
+<p>单位根出现在复平面的单位圆上。</p>
+<p>$n$ 次单位根 $n$ 等分单位圆。</p>
+<p><img src="https://i.loli.net/2021/07/29/S4bs9vC1MENVUyn.png"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p>图片来自 @<a class="link" href="https://www.luogu.com.cn/user/212283"  target="_blank" rel="noopener"
+    >Aw顿顿</a></p>
+<p>对于单位圆上的点，可以表示为 $\cos \theta+i \sin \theta$。</p>
+<p>从 $1$ 开始，沿着单位圆逆时针给单位根标号：</p>
+<p>$\omega_n^0=1,\omega_n^1$是第二个为单位根&hellip;</p>
+<p>$\omega_n^k=\cos\frac{k}{n}2\pi+i\sin\frac{k}{n}2\pi$。</p>
+<h3 id="性质">性质
+</h3><ol>
+<li>
+<p>$\omega_n^k=\omega_n^{k%n}$</p>
+</li>
+<li>
+<p>$\omega _n^0=1$</p>
+</li>
+<li>
+<p>$\omega_n ^k=(\omega_n^1)^k$</p>
+<p>（$\omega _n^k=\omega _n^1\times \omega _n^1\times \omega _n^1&hellip;\times \omega _n^1$ 共 $k$ 个，可以理解为每次逆时针转动 $\frac{1}{n}$ 个圆周，转了 $k$ 次。或者类比同底数幂相乘 ）</p>
+</li>
+<li>
+<p>$\omega_n^j\times \omega_n^k =\omega_n^{j+k}$</p>
+</li>
+<li>
+<p>$(\omega _n^k)^{-1}=(\omega_n^{-k})=(\omega_n^{n-k})$</p>
+<p>可以倒过来反向回推：</p>
+<p>$\omega_n^{n-k}\times \omega_n^k=\omega_n^{n-k+k}=\omega_n^n=\omega_n^n=1$</p>
+<p>所以 $(\omega _n^k)^{-1}=\omega_n^{n-k}$</p>
+</li>
+<li>
+<p>$(\omega_n^k)^j=\omega_n^{kj}$</p>
+</li>
+<li>
+<p>$\omega_{pn}^{pk}=\omega_n^k$</p>
+<p>想象成切蛋糕，多切了几刀，但是相应的多取了几倍。</p>
+</li>
+<li>
+<p>如果 $n$ 是偶数，$\omega_n^{(k+\frac{n}{2})}=-\omega_n^k$</p>
+<p>$\omega_n^{(k+\frac{n}{2})}=\omega_n^k\times\omega_n^{(\frac{n}{2})}$</p>
+<p>对于 $\omega_n^{(\frac{n}{2})}$ ，可以理解为把幅角转动 $\frac{1}{2}$ 个圆周，关于原点对称。</p>
+</li>
+</ol>
+<h2 id="dft-与-idft-概述">DFT 与 IDFT 概述
+</h2><p>把<strong>系数表示</strong>转化为<strong>点值表示</strong>的算法叫做 DFT；</p>
+<p>把<strong>点值表示</strong>转化为<strong>系数表示</strong>的算法叫做 IDFT（或者称为 DFT 的逆运算）</p>
+<p>从系数表示确定点值表示的过程叫做求值，从点值表示确定系数表示的过程叫做插值。</p>
+<h2 id="fft-快速傅里叶变换">FFT 快速傅里叶变换
+</h2><p>FFT 是将系数表示转化为点值表示进行计算，之后再转化成系数表示。</p>
+<p>主要过程分为了两步：系数表示转化为点值表示，点值表示转化为系数表示。</p>
+<p>就是 DFT 和 IDFT 了。</p>
+<p>不使用 FFT 直接进行朴素转化是 $\mathcal{O(n^2)}$ 的。</p>
+<p>考虑更高效的方法。</p>
+<h3 id="dft系数表示转化成点值表示">DFT（系数表示转化成点值表示）
+</h3><p>设多项式:</p>
+<p>$$A(x)=\sum\limits_{i=0}^{n-1}a_i x^i=a_0x^0+a_1x^1+a_2x^2&hellip;+a_{n-1}x^{n-1}$$</p>
+<p>按奇偶分类（分治思路）：</p>
+<p>$$A(x)=(a_0x^0+a_2x^2+a_4x^4&hellip;+a_{n-2}x^{n-2})$$</p>
+<p>$$+$$</p>
+<p>$$(a_1x^1+a_3x^3+a_5x^5&hellip;+a_{n-1}x^{n-1})$$</p>
+<p>两边统一次数，提出后面的 $x$：</p>
+<p>$$A(x)=(a_0+a_2x^2+a_4x^4&hellip;+a_{n-2}x^{n-2})$$</p>
+<p>$$+$$</p>
+<p>$$x\times(a_1+a_3x^2+a_5x^4&hellip;+a_{n-1}x^{n-2})$$</p>
+<p>设两个 $\frac{n}{2}$ 项的多项式 $L(x)$ 和 $R(x)$ ，考虑降低 $A(x)$ 的次数，执行分治过程：</p>
+<p>$$L(x)=(a_0+a_2x^1+a_4x^2&hellip;+a_{n-2}x^{\frac{n}{2}-1})$$</p>
+<p>$$R(x)=(a_1+a_3x^1+a_5x^2&hellip;+a_{n-1}x^{\frac{n}{2}-1})$$</p>
+<p>原式可以表示为 $A(x)=L(x^2)+x\times R(x^2)$</p>
+<p>注意式子中需要带入 $x^2$ ，由于我们为了执行分治降低了次数，现在要保持式子不变。</p>
+<p>之后考虑把单位根 $\omega_n ^k$ 带入原式</p>
+<ul>
+<li>
+<p>$k&lt;\frac{n}{2}$ ，代入 $\omega_n^ k$ :</p>
+<p>$$A(\omega_n^k)=L((\omega_n^k)^2)+\omega_n^k\times R((\omega_n^k)^2)$$</p>
+<p>根据单位根性质 $7$ $\omega_{pn}^{pk}=\omega_n^k$:</p>
+<p>$$(\omega_n^k)^2=(\omega_n^{2k})=(\omega_{\frac{n}{2}}^{k})$$</p>
+<p>$$A(\omega_n^k)=L(\omega_{\frac{n}{2}}^{k})+\omega_n^k\times R(\omega_{\frac{n}{2}}^{k})$$</p>
+</li>
+</ul>
+<ul>
+<li>
+<p>$k&lt;\frac{n}{2}$,代入 $\omega_n^ {k+\frac{n}{2}}$</p>
+<p>$$A(\omega_n^ {k+\frac{n}{2}})=L((\omega_n^ {k+\frac{n}{2}})^2)+\omega_n^ {k+\frac{n}{2}}\times R((\omega_n^ {k+\frac{n}{2}})^2)$$</p>
+<p>由单位根的性质 $6$ $(\omega_n^k)^j=\omega_n^{kj}$ 得：</p>
+<p>$$A(\omega_n^ {k+\frac{n}{2}})=L(\omega_n^ {2k+n})+\omega_n^ {k+\frac{n}{2}}\times R(\omega _n^{2k+n})$$</p>
+<p>由单位根的性质 $1$ $\omega_n^k=\omega_n^{k%n}$ 得到：</p>
+<p>$$A(\omega_n^ {k+\frac{n}{2}})=L(\omega_n^ {2k})+\omega_n^ {k+\frac{n}{2}}\times R(\omega _n^{2k})$$</p>
+<p>由单位根的性质 $7$ $\omega_{pn}^{pk}=\omega_n^k$ 得到：</p>
+<p>$$A(\omega_n^ {k+\frac{n}{2}})=L(\omega_{\frac{n}{2}}^ {k})+\omega_n^ {k+\frac{n}{2}}\times R(\omega_{\frac{n}{2}}^ {k})$$</p>
+<p>由单位根的性质 $8$ $\omega_n^{(k+\frac{n}{2})}=-\omega_n^k$ 得：</p>
+<p>$$A(\omega_n^ {k+\frac{n}{2}})=L(\omega_{\frac{n}{2}}^ {k})-\omega_n^ {k}\times R(\omega_{\frac{n}{2}}^ {k})$$</p>
+</li>
+</ul>
+<p>对比两个式子：</p>
+<p>$$A(\omega_n^k)=L(\omega_{\frac{n}{2}}^{k})+\omega_n^k\times R(\omega_{\frac{n}{2}}^{k})$$</p>
+<p>$$A(\omega_n^ {k+\frac{n}{2}})=L(\omega_{\frac{n}{2}}^ {k})-\omega_n^ {k}\times R(\omega_{\frac{n}{2}}^ {k})$$</p>
+<p>发现右侧只有一个符号的差别。于是他们可以同步计算。</p>
+<p>换句话说，FFT 就是把单位根上下半圆的部分分别带入 $A(x)=L(x^2)+x\times R(x^2)$</p>
+<p>于是我们在 $\mathcal{O(n\log n)}$ 时间复杂度内完成了系数表示转成点值表示的过程。</p>
+<h3 id="idft-点值表示转化成系数表示">IDFT （点值表示转化成系数表示）
+</h3><p>由于代入时我们选择了单位根，现在我们十分方便地就可以完成 点值表示转化成系数表示。</p>
+<p>首先写出结论：<strong>把 DFT 中的 $\omega_n^1$ 换成 $\omega_n^{-1}$ 做完之后除以 $n$ 即可</strong>。</p>
+<p>证明与<a class="link" href="https://www.luogu.com.cn/blog/command-block/dan-wei-gen-fan-yan-xiao-ji"  target="_blank" rel="noopener"
+    >单位根反演</a>有关。</p>
+<p>设 多项式 $A(x)$ 经过了 DFT 变换之后得到的点值数列为 $G$。</p>
+<p>即 $G=DFT(A)$</p>
+<p>回忆代入的过程，可以得到：</p>
+<p>$$G[k]=\sum\limits^{n-1}_{i=0}(\omega_n^k)^iA[i]$$</p>
+<p>（含义是每一个点值都是把单位根代进每一项中乘以系数得到的）</p>
+<p>结论是 $n\times A[k]=\sum\limits^{n-1}_{i=0}(\omega_n^{-k})^iG[i]$</p>
+<p>证明：</p>
+<p>把点值代入右边可以得到：</p>
+<p>$$\sum\limits^{n-1}<em>{i=0}\left( (\omega_n^{-k})G[i] \right)=\sum\limits^{n-1}</em>{i=0}\left( \left( \sum\limits^{n-1}_{j=0}(\omega_n^i)^jA[j] \right) \times(\omega_n^{-k})^i \right)$$</p>
+<p>化简得到：</p>
+<p>$$\sum\limits^{n-1}<em>{i=0}\left( (\omega_n^{-k})G[i] \right)=\sum\limits^{n-1}</em>{i=0}\left( \sum\limits^{n-1}_{j=0}(\omega_n^{i(j-k)})A[j] \right)$$</p>
+<p>分类讨论：</p>
+<ul>
+<li>
+<p>$j=k$</p>
+<p>贡献是 $\sum\limits^{n-1}<em>{i=0} \sum\limits^{n-1}</em>{j=0}(\omega_n^{i(j-k)})A[j] \times[j==k]$</p>
+<p>$=\sum\limits^{n-1}_{i=0}\omega_n^{i(k-k)}A[k]$</p>
+<p>$=\sum\limits^{n-1}_{i=0}A[k]$</p>
+<p>$=n\times A[k]$</p>
+</li>
+<li>
+<p>$j\ne k$</p>
+<p>设 $p=j-k$</p>
+<p>贡献就是 $\sum\limits_{i=0}^{n-1}\omega_n^{ip}A[k+p]$</p>
+<p>$=\omega_n^p\left(\sum\limits_{i=0}^{n-1}\omega_n^{i}\right)A[k+p]$</p>
+<p>等比数列求和得到：</p>
+<p>$$\left(\sum\limits_{i=0}^{n-1}\omega_n^{i}\right)=\dfrac{1-\omega_n^{np}}{1-\omega_n^{p}}=\dfrac{1-\omega_n^{0}}{1-\omega_n^{p}}=0$$</p>
+<p>所以这一部分贡献是 $0$。</p>
+<p><strong>这一部分就是所谓的求和引理</strong></p>
+</li>
+</ul>
+<p>证毕。</p>
+<p>于是把 $G$ 数列当作系数再代入一遍，单位根换成所谓的 $\omega _n^{-1}$ 就行了。</p>
+<h2 id="代码实现">代码实现
+</h2><p>有了上述思路，我们就可以开始着手代码实现了。</p>
+<ol>
+<li>
+<p>补充 $n$ 至 $2$ 的整次幂。</p>
+<p>我们上面的过程都是针对 $n$ 是 $2$ 的整次幂进行的，原因是这样可以保证分的足够均匀。</p>
+<p>实际中不满足这个条件？补项就行了。在最高次强行添加系数为 $0$ 的项。</p>
+</li>
+<li>
+<p>预处理单位根</p>
+<p>根据单位根的性质 $3$ $\omega_n ^k=(\omega_n^1)^k$，我们可以把他乘 $n$ 次，就能得到所有想要的单位根。</p>
+<p>第一个单位根是有的，肯定是 $1$。</p>
+<p>第二个单位根 $\omega_n ^1$ 必然是第一个不与实轴重合的单位根，所以他的坐标就是 $(\cos(\frac{2\pi}{n}),\sin(\frac{2\pi}{n}))$</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Complex</span> <span class="nf">omega</span><span class="p">(</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">Pi</span><span class="o">/</span><span class="n">p</span><span class="p">),</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">Pi</span><span class="o">/</span><span class="n">p</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span><span class="p">(</span><span class="n">re</span> <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">w</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">buf</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">buf</span><span class="o">=</span><span class="n">buf</span><span class="o">*</span><span class="n">omega</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>蝴蝶变换</p>
+<p>大概意思是递归版效率太低，我们需要找到迭代解法。</p>
+<p>可以发现多项式的第 $i$ 次项到达递归底层时下标为 $i$ 二进制翻转后的数，所以就可以自底向上迭代合并。</p>
+<p>可以 $\mathcal{O(n)}$ 递推求出。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">for</span><span class="p">(</span><span class="n">re</span> <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="n">trans</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="p">(</span><span class="n">trans</span><span class="p">[</span><span class="n">i</span><span class="o">&gt;&gt;</span><span class="mi">1</span><span class="p">]</span><span class="o">&gt;&gt;</span><span class="mi">1</span><span class="p">)</span><span class="o">|</span><span class="p">((</span><span class="n">i</span><span class="o">&amp;</span><span class="mi">1</span><span class="p">)</span><span class="o">?</span><span class="n">n</span><span class="o">&gt;&gt;</span><span class="mi">1</span><span class="o">:</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>具体证明以及	详细信息以后再补，今天没时间了。</p>
+</li>
+</ol>
+<p>CODE:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">//#define LawrenceSivan
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;bits/stdc++.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">ll</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">ull</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#define INF 0x3f3f3f3f
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define re register
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="n">maxn</span><span class="o">=</span><span class="mf">1e7</span><span class="o">+</span><span class="mi">5</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">int</span> <span class="n">maxm</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">double</span> <span class="n">Pi</span><span class="o">=</span><span class="n">acos</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">Complex</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">double</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Complex</span><span class="p">(){}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Complex</span><span class="p">(</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">_x</span><span class="p">,</span><span class="k">const</span> <span class="kt">double</span> <span class="o">&amp;</span><span class="n">_y</span><span class="p">)</span><span class="o">:</span><span class="n">x</span><span class="p">(</span><span class="n">_x</span><span class="p">),</span><span class="n">y</span><span class="p">(</span><span class="n">_y</span><span class="p">){};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kr">inline</span> <span class="n">Complex</span> <span class="k">operator</span> <span class="o">+</span> <span class="p">(</span><span class="k">const</span> <span class="n">Complex</span> <span class="o">&amp;</span><span class="n">a</span><span class="p">)</span><span class="k">const</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nf">Complex</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="o">+</span><span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kr">inline</span> <span class="n">Complex</span> <span class="k">operator</span> <span class="o">-</span> <span class="p">(</span><span class="k">const</span> <span class="n">Complex</span> <span class="o">&amp;</span><span class="n">a</span><span class="p">)</span><span class="k">const</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nf">Complex</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="o">-</span><span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kr">inline</span> <span class="n">Complex</span> <span class="k">operator</span> <span class="o">*</span> <span class="p">(</span><span class="k">const</span> <span class="n">Complex</span> <span class="o">&amp;</span><span class="n">a</span><span class="p">)</span><span class="k">const</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nf">Complex</span><span class="p">(</span><span class="n">x</span><span class="o">*</span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="o">-</span><span class="n">y</span><span class="o">*</span><span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="p">,</span><span class="n">x</span><span class="o">*</span><span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="o">+</span><span class="n">y</span><span class="o">*</span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kr">inline</span> <span class="n">Complex</span> <span class="k">operator</span> <span class="o">/</span> <span class="p">(</span><span class="k">const</span> <span class="n">Complex</span> <span class="o">&amp;</span><span class="n">a</span><span class="p">)</span><span class="k">const</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">double</span> <span class="n">tmp</span><span class="o">=</span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="o">*</span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="o">+</span><span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="o">*</span><span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nf">Complex</span><span class="p">((</span><span class="n">x</span><span class="o">*</span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="o">*</span><span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="p">)</span><span class="o">/</span><span class="n">tmp</span><span class="p">,(</span><span class="n">y</span><span class="o">*</span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="o">-</span><span class="n">x</span><span class="o">*</span><span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="p">)</span><span class="o">/</span><span class="n">tmp</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span><span class="n">f</span><span class="p">[</span><span class="n">maxn</span><span class="p">],</span><span class="n">p</span><span class="p">[</span><span class="n">maxn</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">trans</span><span class="p">[</span><span class="n">maxn</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">n</span><span class="p">,</span><span class="n">m</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">inline</span> <span class="kt">void</span> <span class="nf">FFT</span><span class="p">(</span><span class="n">Complex</span> <span class="o">*</span><span class="n">f</span><span class="p">,</span><span class="kt">bool</span> <span class="n">op</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="n">re</span> <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">&lt;</span><span class="n">trans</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="n">swap</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">f</span><span class="p">[</span><span class="n">trans</span><span class="p">[</span><span class="n">i</span><span class="p">]]);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="n">re</span> <span class="kt">int</span> <span class="n">p</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span><span class="n">p</span><span class="o">&lt;=</span><span class="n">n</span><span class="p">;</span><span class="n">p</span><span class="o">&lt;&lt;=</span><span class="mi">1</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">len</span><span class="o">=</span><span class="n">p</span><span class="o">&gt;&gt;</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Complex</span> <span class="n">omega</span><span class="p">(</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">Pi</span><span class="o">/</span><span class="n">p</span><span class="p">),</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">Pi</span><span class="o">/</span><span class="n">p</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">op</span><span class="p">)</span><span class="n">omega</span><span class="p">.</span><span class="n">y</span><span class="o">*=-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span><span class="p">(</span><span class="n">re</span> <span class="kt">int</span> <span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">k</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span><span class="n">k</span><span class="o">+=</span><span class="n">p</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Complex</span> <span class="n">buf</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span><span class="p">(</span><span class="n">re</span> <span class="kt">int</span> <span class="n">l</span><span class="o">=</span><span class="n">k</span><span class="p">;</span><span class="n">l</span><span class="o">&lt;</span><span class="n">k</span><span class="o">+</span><span class="n">len</span><span class="p">;</span><span class="n">l</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">                <span class="n">Complex</span> <span class="n">tmp</span><span class="o">=</span><span class="n">buf</span><span class="o">*</span><span class="n">f</span><span class="p">[</span><span class="n">l</span><span class="o">+</span><span class="n">len</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">                <span class="n">f</span><span class="p">[</span><span class="n">l</span><span class="o">+</span><span class="n">len</span><span class="p">]</span><span class="o">=</span><span class="n">f</span><span class="p">[</span><span class="n">l</span><span class="p">]</span><span class="o">-</span><span class="n">tmp</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">f</span><span class="p">[</span><span class="n">l</span><span class="p">]</span><span class="o">=</span><span class="n">f</span><span class="p">[</span><span class="n">l</span><span class="p">]</span><span class="o">+</span><span class="n">tmp</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">buf</span><span class="o">=</span><span class="n">buf</span><span class="o">*</span><span class="n">omega</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">namespace</span> <span class="n">IO</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">inline</span> <span class="kt">void</span> <span class="n">read</span><span class="p">(</span><span class="n">T</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">T</span> <span class="n">f</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="kt">char</span> <span class="n">ch</span><span class="o">=</span><span class="n">getchar</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">isdigit</span><span class="p">(</span><span class="n">ch</span><span class="p">))</span> <span class="p">{</span><span class="k">if</span><span class="p">(</span><span class="n">ch</span><span class="o">==</span><span class="sc">&#39;-&#39;</span><span class="p">)</span><span class="n">f</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span><span class="n">ch</span><span class="o">=</span><span class="n">getchar</span><span class="p">();}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="p">(</span><span class="n">isdigit</span><span class="p">(</span><span class="n">ch</span><span class="p">)){</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="o">*</span><span class="mi">10</span><span class="o">+</span><span class="p">(</span><span class="n">ch</span><span class="o">^</span><span class="mi">48</span><span class="p">);</span><span class="n">ch</span><span class="o">=</span><span class="n">getchar</span><span class="p">();}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">x</span><span class="o">*=</span><span class="n">f</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">typename</span><span class="p">...</span> <span class="n">Args</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">inline</span> <span class="kt">void</span> <span class="n">read</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;</span> <span class="n">t</span><span class="p">,</span> <span class="n">Args</span><span class="o">&amp;</span><span class="p">...</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">read</span><span class="p">(</span><span class="n">t</span><span class="p">);</span> <span class="n">read</span><span class="p">(</span><span class="n">args</span><span class="p">...);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="n">write</span><span class="p">(</span><span class="n">T</span> <span class="n">x</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">x</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">)</span><span class="n">putchar</span><span class="p">(</span><span class="sc">&#39;-&#39;</span><span class="p">),</span><span class="n">x</span><span class="o">=-</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">x</span><span class="o">&gt;</span><span class="mi">9</span><span class="p">)</span><span class="n">write</span><span class="p">(</span><span class="n">x</span><span class="o">/</span><span class="mi">10</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">putchar</span><span class="p">(</span><span class="n">x</span><span class="o">%</span><span class="mi">10</span><span class="o">+</span><span class="sc">&#39;0&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span><span class="k">typename</span><span class="p">...</span> <span class="n">Args</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="n">write</span><span class="p">(</span><span class="n">T</span> <span class="n">t</span><span class="p">,</span><span class="n">Args</span><span class="p">...</span> <span class="n">args</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">write</span><span class="p">(</span><span class="n">t</span><span class="p">);</span><span class="n">putchar</span><span class="p">(</span><span class="sc">&#39; &#39;</span><span class="p">);</span><span class="n">write</span><span class="p">(</span><span class="n">args</span><span class="p">...);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">using</span> <span class="k">namespace</span> <span class="n">IO</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">signed</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#ifdef LawrenceSivan
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>    <span class="n">freopen</span><span class="p">(</span><span class="s">&#34;aa.in&#34;</span><span class="p">,</span><span class="s">&#34;r&#34;</span><span class="p">,</span> <span class="n">stdin</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">freopen</span><span class="p">(</span><span class="s">&#34;aa.out&#34;</span><span class="p">,</span><span class="s">&#34;w&#34;</span><span class="p">,</span> <span class="n">stdout</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#endif
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>    <span class="n">read</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">m</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="n">re</span> <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;=</span><span class="n">n</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="n">scanf</span><span class="p">(</span><span class="s">&#34;%lf&#34;</span><span class="p">,</span><span class="o">&amp;</span><span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">x</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="n">re</span> <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;=</span><span class="n">m</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="n">scanf</span><span class="p">(</span><span class="s">&#34;%lf&#34;</span><span class="p">,</span><span class="o">&amp;</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">x</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="n">m</span><span class="o">+=</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="n">n</span><span class="o">&lt;=</span><span class="n">m</span><span class="p">;</span><span class="n">n</span><span class="o">&lt;&lt;=</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="n">re</span> <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">        <span class="n">trans</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="p">(</span><span class="n">trans</span><span class="p">[</span><span class="n">i</span><span class="o">&gt;&gt;</span><span class="mi">1</span><span class="p">]</span><span class="o">&gt;&gt;</span><span class="mi">1</span><span class="p">)</span><span class="o">|</span><span class="p">((</span><span class="n">i</span><span class="o">&amp;</span><span class="mi">1</span><span class="p">)</span><span class="o">?</span><span class="n">n</span><span class="o">&gt;&gt;</span><span class="mi">1</span><span class="o">:</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">FFT</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">FFT</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="n">re</span> <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="n">FFT</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span><span class="p">(</span><span class="n">re</span> <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;=</span><span class="n">m</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="n">write</span><span class="p">((</span><span class="kt">int</span><span class="p">)(</span><span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">x</span><span class="o">/</span><span class="n">n</span><span class="o">+</span><span class="mf">0.5</span><span class="p">)),</span><span class="n">putchar</span><span class="p">(</span><span class="sc">&#39; &#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">puts</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.body, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2024 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
