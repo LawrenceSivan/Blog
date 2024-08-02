@@ -2,55 +2,62 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>lawrencesivan.github.io/en/categories/</loc>
+    <loc>https://example.com/</loc>
+    <lastmod>2024-08-02T22:33:17+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="lawrencesivan.github.io/categories/"
+                href="https://example.com/zh-cn/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="ar"
-                href="lawrencesivan.github.io/ar/categories/"
+                href="https://example.com/ar/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="lawrencesivan.github.io/en/categories/"
+                href="https://example.com/"
                 />
   </url><url>
-    <loc>lawrencesivan.github.io/en/</loc>
+    <loc>https://example.com/post/</loc>
+    <lastmod>2024-08-02T22:33:17+08:00</lastmod>
+  </url><url>
+    <loc>https://example.com/p/test/</loc>
+    <lastmod>2024-08-02T22:33:17+08:00</lastmod>
+  </url><url>
+    <loc>https://example.com/categories/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="lawrencesivan.github.io/"
+                href="https://example.com/zh-cn/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="ar"
-                href="lawrencesivan.github.io/ar/"
+                href="https://example.com/ar/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="lawrencesivan.github.io/en/"
+                href="https://example.com/categories/"
                 />
   </url><url>
-    <loc>lawrencesivan.github.io/en/tags/</loc>
+    <loc>https://example.com/tags/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="lawrencesivan.github.io/tags/"
+                href="https://example.com/zh-cn/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="ar"
-                href="lawrencesivan.github.io/ar/tags/"
+                href="https://example.com/ar/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="lawrencesivan.github.io/en/tags/"
+                href="https://example.com/tags/"
                 />
   </url>
 </urlset>
