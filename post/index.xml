@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-        <title>Posts on Example Site</title>
-        <link>https://example.com/post/</link>
-        <description>Recent content in Posts on Example Site</description>
+        <title>Posts on 栽种绝处的花</title>
+        <link>https://lawrencesivan.github.io/post/</link>
+        <description>Recent content in Posts on 栽种绝处的花</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>en</language>
+        <language>zh-cn</language>
         <copyright>Example Person</copyright>
-        <lastBuildDate>Fri, 02 Aug 2024 22:33:17 +0800</lastBuildDate><atom:link href="https://example.com/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 02 Aug 2024 22:33:17 +0800</lastBuildDate><atom:link href="https://lawrencesivan.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Test</title>
-        <link>https://example.com/p/test/</link>
+        <link>https://lawrencesivan.github.io/p/test/</link>
         <pubDate>Fri, 02 Aug 2024 22:33:17 +0800</pubDate>
         
-        <guid>https://example.com/p/test/</guid>
+        <guid>https://lawrencesivan.github.io/p/test/</guid>
         <description></description>
         </item>
         
