@@ -14,7 +14,7 @@
       <link>https://lawrencesivan.github.io/p/test/</link>
       <pubDate>Fri, 02 Aug 2024 22:33:17 +0800</pubDate>
       <guid>https://lawrencesivan.github.io/p/test/</guid>
-      <description></description>
+      <description>P4396 [AHOI2013] 作业 莫队+值域分块 题意：给出一个静态区间和多个询问，询问分为下面两种： 在区间 $[l,r]$ 中有多少个 $i$，使得 $a_i∈[a,b]$； 在区间 $[l,r]$ 中有</description>
     </item>
   </channel>
 </rss>
