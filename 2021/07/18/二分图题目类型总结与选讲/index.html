@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  
+  <!-- <link rel="stylesheet" href="https://gcore.jsdelivr.net/gh/LawrenceSivan/cdn@master/css/loader2.css" />
+  <style>
+    /* #spinner {
+              position: fixed;
+              z-index: 9999999;
+              width: 100%;
+              height: 100%;
+          }  */
+  </style>
+  <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script> -->
+  <!-- <link rel="stylesheet" type="text/css" href="/css/matery.css"> -->
+
+  
+  <title itemprop="name">二分图题目类型总结与选讲 | LawrenceSivan</title>
+  <!-- <script src="https://gcore.jsdelivr.net/gh/LawrenceSivan/cdn@master/js/anime.js"></script>
+  <script src="https://gcore.jsdelivr.net/gh/LawrenceSivan/cdn@master/js/loader.js"></script> -->
+  
+    <link rel="shortcut icon" href="https://gcore.jsdelivr.net/gh/LawrenceSivan/cdn@master/pictures/avatar.jpg">
+  
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+SerifMerriweather|Merriweather+Sans|Source+Code+Pro|Ubuntu:400,700|Noto+Serif+SC" media="all">
+  <link rel="dns-prefetch" href="//gcore.jsdelivr.net">
+  <link rel="stylesheet" id="saukra_css-css" href="/css/style.css" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/lib.min.css" media="all">
+  <link rel="stylesheet" href="/css/font.css" media="all">
+  <link rel="stylesheet" href="/css/insight.css" media="all">
+  <link rel="stylesheet" href="/css/jquery.fancybox.min.css" media="all">
+  <link rel="stylesheet" href="/css/zoom.css" media="all">
+  <link rel="stylesheet" type="text/css" href="/css/sharejs.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/matery.css"> -->
+<!--   <link rel="stylesheet" id="saukra_css-css" href="https://2heng.xin/wp-content/cache/autoptimize/css/autoptimize_ad42a61f4c7d4bdd9f91afcff6b5dda5.css
+" type="text/css" media="all"> -->
+  <script>
+  /*Initial Variables*/
+  var mashiro_option = new Object();
+  var mashiro_global = new Object();
+  mashiro_option.NProgressON = true;
+  /* 
+   * 邮箱信息之类的东西可以填在这里，这些js变量基本都作用于sakura-app.js
+   * 这样的设置仅是为了方便在基于PHP开发的主题中设置js变量，既然移植到了Node上，我想或许可以精简这一逻辑吧
+   */
+  mashiro_option.email_domain = "";
+  mashiro_option.email_name = "";
+  mashiro_option.cookie_version_control = "";
+  mashiro_option.qzone_autocomplete = false;
+  mashiro_option.site_name = "LawrenceSivan";
+  mashiro_option.author_name = "LawrenceSivan";
+  mashiro_option.site_url = "https://lawrencesivan.github.io/";
+  mashiro_option.v_appId = "dIwCuws5ndk9l6KNX62Yp2v6-gzGzoHsz";
+  mashiro_option.v_appKey = "5KBdadEbfMMamh1KsfIlVDqD";
+  mashiro_option.mathjax = "1";
+  mashiro_option.qq_api_url = "https://api.mashiro.top/qqinfo/"; 
+  mashiro_option.qq_avatar_api_url = "https://api.mashiro.top/qqinfo/";
+
+  // mashiro_option.jsdelivr_css_src = "https://gcore.jsdelivr.net/gh/moezx/cdn@3.4.5/css/lib.min.css";
+  // mashiro_option.float_player_on = true;
+
+  /*End of Initial Variables*/
+  </script>
+  <script type="text/javascript">
+  var bg = "https://gcore.jsdelivr.net/gh/LawrenceSivan/cdn@master/pictures/1.jpeg,https://gcore.jsdelivr.net/gh/LawrenceSivan/cdn@master/pictures/6.jpeg,https://gcore.jsdelivr.net/gh/LawrenceSivan/cdn@master/pictures/12.jpeg,https://gcore.jsdelivr.net/gh/LawrenceSivan/cdn@master/pictures/15.jpeg,https://gcore.jsdelivr.net/gh/LawrenceSivan/cdn@master/pictures/34.jpg,https://gcore.jsdelivr.net/gh/LawrenceSivan/cdn@master/pictures/32.jpg,https://gcore.jsdelivr.net/gh/LawrenceSivan/cdn@master/pictures/19.jpeg,https://gcore.jsdelivr.net/gh/LawrenceSivan/cdn@master/pictures/31.jpg,https://gcore.jsdelivr.net/gh/LawrenceSivan/cdn@master/pictures/36.png,https://gcore.jsdelivr.net/gh/LawrenceSivan/ima@master/QQ%E5%9B%BE%E7%89%8720211013140453.png,https://gcore.jsdelivr.net/gh/LawrenceSivan/cdn@master/pictures/42.jpg".split(",");
+  var bgindex = Math.floor(Math.random()*bg.length);
+  if (!!window.ActiveXObject || "ActiveXObject" in window) { //is IE?
+    alert('朋友，IE浏览器未适配哦~');
+  }
+  </script>
+  <style type="text/css">
+  .hljs-ln{border-collapse:collapse}.hljs-ln td{padding:0}.hljs-ln-n:before{content:attr(data-line-number)}
+  </style>
+  <style type="text/css">.site-top .lower nav{display:block !important;}.author-profile i,.post-like a,.post-share .show-share,.sub-text,.we-info a,span.sitename,.post-more i:hover,#pagination a:hover,.post-content a:hover,.float-content i:hover{color:#FE9600}.feature i,.download,.navigator i:hover,.links ul li:before,.ar-time i,span.ar-circle,.object,.comment .comment-reply-link,.siren-checkbox-radio:checked + .siren-checkbox-radioInput:after{background:#FE9600}::-webkit-scrollbar-thumb{background:#FE9600}.download,.navigator i:hover,.link-title,.links ul li:hover,#pagination a:hover,.comment-respond input[type='submit']:hover{border-color:#FE9600}.entry-content a:hover,.site-info a:hover,.comment h4 a,#comments-navi a.prev,#comments-navi a.next,.comment h4 a:hover,.site-top ul li a:hover,.entry-title a:hover,#archives-temp h3,span.page-numbers.current,.sorry li a:hover,.site-title a:hover,i.iconfont.js-toggle-search.iconsearch:hover,.comment-respond input[type='submit']:hover{color:#FE9600}.comments .comments-main{display:block !important;}.comments .comments-hidden{display:none !important;}background-position:center center;background-attachment:inherit;}
+  </style>
+  <script type="text/javascript" src="https://gcore.jsdelivr.net/gh/drew233/cdn/js/echarts.min.js"></script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="page-template page-template-user page-template-page-analytics page-template-userpage-analytics-php page page-id-1297 chinese-font serif isWebKit">
+  <!-- <script src="https://gcore.jsdelivr.net/gh/LawrenceSivan/cdn@master/js/anime.js" type="text/javascript"></script>
+  
+  <div id="spinner">
+    <svg class="loader-svg" viewBox="0 0 100 100">
+      <path class="pig"
+        d="m 49,81 c -4.97949,0.0288 -8.87182,-1.33563 -12.96403,-4.78789 -1.37863,4.03232 -1.98391,5.09242 -2.5173,7.67551 -1.7034,-1.84098 -1.85041,-2.38138 -3.40931,-4.01426 -1.66859,1.1093 -2.97808,2.47785 -3.73546,3.41895 -0.3552,-2.5689 -0.1426,-3.49976 -1.3115,-8.15934 -1.1825,-4.71376 -4.7989,-11.7127 -4.86568,-20.02735 -0.0386,-4.80812 2.45175,-8.918 3.87545,-11.06273 -2.56161,-0.82848 -3.66901,-2.05201 -4.32566,-3.72552 -1.38384,-3.52678 0.76087,-6.22823 2.88932,-5.55409 2.80181,0.88742 2.09867,3.7385 -0.93073,5.11902 -4.28599,1.95316 -6.12353,-0.052 -7.239,-1.3961 1.11484,1.3981 2.94928,3.34732 7.1873,1.34439 3.12689,-1.4778 3.77421,-4.17385 0.93073,-5.06731 -2.07984,-0.65352 -4.10537,2.03309 -2.80106,5.53267 0.64344,1.72641 1.72064,2.95171 4.2891,3.7835 3.5922,-4.8354 10.26924,-9.22914 21.7499,-11.29879 -1.46246,-2.03309 -2.43102,-3.39383 -2.3357,-5.74316 0.21875,-5.39103 3.59202,-7.97334 8.7965,-8.65912 5.65823,-0.74557 9.43731,3.64106 9.50417,7.02698 0.0731,3.70345 -1.3446,5.02967 -2.99274,7.33247 3.54373,0.58436 5.49027,1.12272 8.15459,1.87033 2.33525,-2.21395 5.54998,-6.14061 7.32208,-4.80249 2.29444,1.73253 1.38678,5.35445 0.96881,8.15092 2.61672,1.04146 5.01114,3.17616 6.80761,5.54521 1.79647,2.36905 1.2415,6.43267 3.77462,8.6351 1.47532,1.28272 2.93396,-0.18609 4.96389,0.62048 0.60399,0.58719 -0.95559,8.65166 -2.58536,10.39315 -1.43313,1.53137 -2.41395,0.58126 -3.36097,1.29268 -0.72765,1.00392 -0.65377,1.18862 -2.37593,2.64593 -3.13223,2.65054 -4.87112,2.82698 -7.98325,5.42039 -2.70413,2.25341 -2.78375,6.0969 -3.29151,11.01363 -1.9337,-1.7742 -2.2328,-2.24397 -3.77463,-3.5678 -1.50527,1.60119 -1.90499,1.93078 -2.99901,3.05073 -0.65527,-2.5363 -0.84208,-4.12175 -2.01658,-6.70437 -3.54762,2.27769 -5.52832,3.0772 -7.98223,3.69783 -2.23563,0.56543 -2.40172,0.98302 -5.41643,1.00045"
+        style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;" />
+      <g class="pig-inside">
+        <path
+          d="m 77.46679,49.84793 c 0,0 -0.55878,-2.506 -2.24475,-2.5198 -1.68597,-0.0138 -2.27512,2.43024 -2.27512,2.43024"
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;" />
+        <path
+          d="m 64.20841,40.34766 c 0.14612,-2.86924 -6.96545,-2.63546 -11.68582,-2.8956 -3.99042,-0.21991 -11.84046,-0.0114 -11.68583,2.79219 0.10861,1.96931 4.46343,0.72553 6.4117,0.56877 1.74768,-0.14062 3.47128,-0.25468 5.37753,-0.20683 1.90625,0.0479 4.62153,0.22331 6.56682,0.51708 1.92467,0.29066 4.93255,0.85518 5.0156,-0.77561 z"
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;" />
+        <path id="path1382"
+          d="m 25.95022,60.67043 c 0,0.0231 -0.80306,-2.92201 -0.62156,-5.63063 0.1815,-2.70862 1.82813,-5.59406 1.82813,-5.59406"
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;" />
+        <path id="path1384" d="m 29.21343,46.20996 0.0823,-0.0914"
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;" />
+        <path id="path1386"
+          d="m 45.65754,32.52472 c 0,0 2.53269,2.42261 6.26597,2.46941 3.73329,0.0468 6.99876,-2.56708 6.99876,-2.56708"
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;" />
+        <path id="path1388"
+          d="m 47.30272,26.77699 c 0.0452,-2.83115 2.67919,-4.8801 5.48438,-4.89937 2.65889,-0.0183 5.29285,1.68757 5.11875,4.3875 -0.19085,2.95966 -2.46255,4.88803 -5.15531,5.00906 -3.42581,0.15398 -5.48717,-2.03157 -5.44782,-4.49719 z"
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;" />
+      </g>
+      <path class="calculator"
+        style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;"
+        d="m 49,81 c -5.36249,-0.0991 -10.158823,-0.397154 -16.391123,-0.105624 -13.36698,0.62533 -14.7761,-2.5935 -15.3636,-9.24037 -0.12286,-1.38997 0.0274,-1.82983 -0.17286,-6.98451 -0.18004,-4.63433 -0.91747,-13.8623 -1.01488,-20.59616 -0.0974,-6.73386 -0.22911,-13.12783 0.585,-20.23421 0.71122,-6.20825 1.898,-8.80142 8.84293,-9.34225 3.16904,-0.24679 2.84265,-0.0705 6.12627,0.0502 3.28362,0.12066 10.45385,-0.35958 13.3161,-0.34268 2.86225,0.0169 2.23833,-0.0321 4.31223,0.034 2.0739,0.0661 3.98575,-0.4925 8.37756,-0.44762 4.39181,0.0449 11.53012,0.68765 16.965,0.77409 7.13142,0.11341 7.43838,1.67632 8.46476,7.94033 0.31163,1.90189 0.27364,1.85106 0.2674,6.80582 -0.004,3.14692 -0.51837,7.16816 -0.53329,12.26726 -0.0149,5.0991 0.59236,12.91401 0.57613,17.98875 -0.0162,5.07474 -0.12549,7.86774 -0.48159,12.68979 -0.59396,8.04329 -3.63307,7.50216 -5.95341,8.07771 -3.6146,0.89658 -7.77229,0.64536 -12.13875,0.73125 -5.477776,0.05888 -10.983592,0.02086 -15.783877,-0.06578" />
+      <g>
+        <path
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;"
+          d="m 25.567967,75.685996 c -2.42904,-0.13943 -3.40236,-1.83355 -3.36097,-3.2317 0.10012,-3.38113 -0.0705,-6.3494 0.31025,-8.42827 0.48236,-2.63342 1.08755,-3.04941 3.30926,-3.33511 1.9582,-0.25182 5.95106,-0.25822 8.06632,-0.15512 1.80447,0.088 3.60552,1.97904 3.56779,4.18828 -0.0365,2.13537 -0.26052,4.38767 -0.18872,5.68684 0.0718,1.29917 0.15696,1.34729 0.15436,2.39247 -0.003,1.07133 -0.78278,2.59918 -2.4168,2.68269 -1.40492,0.0718 -3.57965,0.17845 -5.17934,0.0953 -1.59969,-0.0831 -2.76077,0.1908 -4.26215,0.10462 z" />
+        <path
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;"
+          d="m 24.693637,56.470656 c -1.23106,-0.14597 -2.36814,-1.01627 -2.46851,-2.75366 -0.087,-1.50516 0.12451,-3.80232 0.14625,-5.41125 0.0217,-1.60893 -0.0354,-2.81665 0.15512,-4.24125 0.20171,-1.5081 1.2532,-2.45828 3.54397,-2.60589 1.51096,-0.0974 2.95016,-0.0793 4.2235,-0.0783 1.27335,9.7e-4 2.45118,-0.24889 3.69174,-0.13738 1.28937,0.11591 3.12042,1.22152 3.2943,2.82159 0.15874,1.46073 -0.0428,3.3608 0.009,4.9725 0.0516,1.6117 0.19735,3.56506 0.0768,4.93854 -0.12885,1.46806 -1.08801,2.11527 -2.81271,2.36509 -1.6493,0.2389 -3.62065,0.0372 -5.22952,-0.034 -1.60886,-0.0711 -3.47365,0.30108 -4.62981,0.164 z" />
+        <path
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;"
+          d="m 45.645497,75.705576 c -2.95594,0.0975 -3.45169,-1.97336 -3.47952,-3.6989 -0.0228,-1.41559 0.20682,-2.34204 0.20682,-3.51609 0,-1.17405 -0.16472,-2.05707 -0.0971,-3.55264 0.10249,-2.268 0.67446,-3.56915 3.19956,-4.30685 1.73449,-0.50672 3.19652,0.0109 4.71943,-0.0857 1.5229,-0.0966 3.80153,-0.1512 5.18541,0.40327 1.38389,0.55447 2.01455,1.81765 2.07869,3.40532 0.0647,1.60269 -0.22852,2.88537 -0.19429,4.3434 0.0342,1.45803 0.6882,3.21295 0.25487,4.56278 -0.9984,3.11001 -1.68127,2.33124 -3.56413,2.4694 -1.3426,0.0985 -2.62468,-0.0175 -4.00395,-0.0606 -1.37926,-0.0431 -2.6506,-0.018 -4.30576,0.0366 z" />
+        <path
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;"
+          d="m 45.113247,56.276376 c -1.55904,-0.21353 -2.5947,-0.47161 -2.73515,-2.62731 -0.0794,-1.2192 -0.16888,-2.37997 -0.0997,-3.80769 0.0691,-1.42772 -0.12205,-3.05605 0.0562,-5.265 0.18127,-2.24686 1.99109,-3.00663 3.48415,-3.20863 1.4944,-0.20218 2.78959,-0.0537 4.16813,-0.0177 1.37853,0.036 2.72525,-0.12836 4.12085,0.082 2.09881,0.31638 3.01127,1.3628 3.19532,3.02398 0.20521,1.85224 -0.002,3.76213 -0.051,5.31227 -0.0492,1.55014 0.15608,2.72789 0.0731,3.94875 -0.15081,2.21882 -1.15558,2.59707 -2.55938,2.69676 -1.4536,0.10322 -2.99794,-0.0143 -4.60687,-0.0643 -1.60893,-0.05 -3.34131,0.16027 -5.04563,-0.0731 z" />
+        <path
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;"
+          d="m 65.123957,75.626186 c -1.38595,-0.27786 -2.98238,-0.0673 -3.20584,-3.30926 -0.22346,-3.242 0.24552,-11.3927 0.31024,-15.8224 0.0647,-4.4297 -0.11759,-8.23249 0.10342,-10.7551 0.22101,-2.52261 1.78746,-4.04561 3.41267,-4.18461 1.62521,-0.13899 3.51409,-0.0346 4.97017,-0.001 1.45608,0.0336 2.39146,-0.0532 3.71664,0.12851 1.32518,0.18168 2.80205,1.45386 2.76709,3.22986 -0.035,1.776 -0.10441,0.26814 -0.0355,4.24626 0.0689,3.97811 -0.06,15.53622 -0.14625,19.64246 -0.0863,4.10624 0.32496,1.83709 0.15145,4.23999 -0.17352,2.4029 -0.93136,2.68195 -3.04706,2.71906 -1.93294,0.0339 -2.94572,0.21019 -4.44681,0.17654 -1.50109,-0.0337 -3.16429,-0.0324 -4.55024,-0.31024 z" />
+        <path
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;"
+          d="m 26.320127,35.728246 c -3.03684,0.12742 -4.13946,-1.21939 -4.03442,-2.96784 0.0959,-1.5967 -0.064,-3.92949 0.0857,-5.36841 0.14888,-1.43175 -0.1065,-2.02241 0,-3.36375 0.15903,-2.00303 1.27568,-3.48396 2.64948,-3.44055 1.57209,0.0497 1.41595,-0.002 3.63927,0.0768 7.92144,0.28109 28.9105,-0.24327 44.02125,0.21937 2.85346,0.0874 4.12015,0.97927 4.3875,2.99813 0.23862,1.80188 0.13735,3.54878 0.12427,4.97276 -0.0131,1.42398 0.062,1.91711 -0.12427,3.36349 -0.20208,1.56934 -0.85138,3.4694 -4.78969,3.51 -8.66247,0.0893 -35.78219,-0.427 -45.95906,0 z" />
+        <path
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;"
+          d="m 26.246997,71.486376 c 0,0 4.56944,-4.60347 5.77688,-5.5575 1.20744,-0.95403 1.02375,-0.65813 1.02375,-0.65813" />
+        <path
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;"
+          d="m 26.466377,65.416996 c 0,0 0.10371,0.29932 0.95062,1.09688 0.84691,0.79756 3.54667,2.54633 4.3875,3.36375 0.84083,0.81742 0.95063,1.17 0.95063,1.17" />
+        <path
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;"
+          d="m 25.735127,48.963866 c 0,0 2.1305,0.19733 3.8025,0.21938 1.672,0.0221 3.36375,-0.14625 3.36375,-0.14625" />
+        <path
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;"
+          d="m 29.391377,45.563566 c 0,0 0.10764,0.49864 0.14625,1.42593 0.0386,0.92729 -0.20865,3.46092 -0.14625,4.31438 0.0624,0.85346 0.14625,1.13343 0.14625,1.13343" />
+        <path
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;"
+          d="m 45.864337,68.630566 c 0,0 4.68665,-0.46291 5.96775,-0.44394 1.2811,0.019 1.968,0.20055 1.968,0.20055" />
+        <path
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;"
+          d="m 49.890157,70.617046 h 0.0642" />
+        <path d="m 49.765157,65.679546 h 0.0642"
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;" />
+        <path
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;"
+          d="m 46.390127,48.951376 c 0,0 1.0414,-0.0327 1.96874,-0.0469 0.92734,-0.0142 2.75877,0.10188 3.57813,0.10938 0.81936,0.007 1.25,-0.0625 1.25,-0.0625" />
+        <path
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;"
+          d="m 66.299527,60.104306 c 0,0 2.59921,0.1669 3.71231,0.17677 1.1131,0.01 2.96101,-0.0884 2.96101,-0.0884" />
+        <path
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;"
+          d="m 66.268287,57.611126 1.31287,0.0183 h 5.3475" />
+        <path
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;"
+          d="m 25.508307,28.903216 c 0,0 -0.42577,-2.56773 0.0496,-3.52259 0.47532,-0.95486 2.24854,-1.69232 2.24854,-1.69232" />
+        <path
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;"
+          d="m 30.339347,23.588086 h 0.0234" />
+      </g>
+      <path class="wallet"
+        d="m 49,81 c -4.119302,-0.133383 -7.114451,0.229393 -10.461024,0.236513 -3.346574,0.0071 -3.853134,0.717888 -10.684122,0.121158 -8.896148,-0.777134 -9.684309,-2.495817 -11.128959,-12.758497 -0.739191,-5.251153 -0.188781,-11.357532 -0.196435,-16.329076 -0.0077,-4.971544 0.142616,-4.268999 -0.534815,-15.501762 -0.677431,-11.232767 2.724601,-13.301977 10.031192,-13.133627 7.306591,0.16835 1.275353,0.0217 6.928763,0 5.65341,-0.0217 20.40657,-0.26322 26.99115,-0.20683 6.58458,0.0564 4.930203,0.67561 12.513138,0.31025 7.582935,-0.36536 9.134672,2.09561 9.307293,6.5151 0.172621,4.41949 -0.645835,4.05121 -0.503908,7.311335 3.651927,3.113879 1.830509,8.671976 1.90125,12.102187 4.604491,0.06646 4.663611,4.721185 4.219832,8.889884 -0.600323,5.639228 -0.354062,8.169757 -4.804832,7.892303 0.830451,11.81846 -1.363381,14.720503 -8.723541,15.097818 -7.36016,0.377315 -6.469716,0.427505 -10.599972,0.465365 -4.130256,0.03786 -10.135708,-0.878738 -14.25501,-1.012121"
+        style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;" />
+      <g>
+        <path
+          d="m 78.90793,36.248314 c 0.136772,-2.445285 0.354257,-4.404775 -2.150914,-4.447315 -12.41111,-0.21075 -24.566825,0.0739 -32.647713,0.034 -8.080888,-0.04 -11.970786,-0.12891 -15.627332,-0.16324 -3.656547,-0.0343 -4.902258,0.10758 -6.31904,-0.10341 -1.767686,-0.26325 -3.734807,-0.88581 -3.354878,-2.61995 0.316614,-1.44516 2.34135,-1.25497 4.451753,-1.40193 1.70421,-0.11866 1.718959,-0.19887 5.11875,-0.0731 3.399791,0.12575 9.103821,-0.0486 16.453125,0 7.349305,0.0486 22.263913,0.48059 27.641249,0.36562 2.685302,-0.34899 3.362797,-0.38618 4.581021,-0.20607 1.663644,0.24597 1.926535,2.85458 1.31625,4.56772 0.992638,1.01508 0.693457,1.73988 0.537729,4.047725 z"
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;" />
+        <path
+          d="m 17.200933,30.873719 c 0,0 0.07434,4.03 5.222426,4.13657 4.522694,0.0936 5.832619,-0.0831 11.530701,-0.15512 5.698083,-0.0721 10.14572,0.45794 13.598989,0.36196 6.041229,-0.16792 13.435475,-0.2661 20.217508,-0.15513 13.451079,0.22009 14.340805,2.844174 14.340805,2.844174"
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;" />
+        <path d="m 16.605431,38.442064 1.60875,0.73125"
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;" />
+        <path d="m 22.202092,39.465814 2.291968,-0.219375"
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;" />
+        <path d="m 28.929592,39.465814 2.77084,-0.313773"
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;" />
+        <path d="m 35.691056,39.392689 2.184879,0.05171"
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;" />
+        <path d="m 42.711056,39.465814 h 2.48625"
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;" />
+        <path d="m 49.731056,39.444396 2.443414,0.14625"
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;" />
+        <path d="m 57.067171,39.405402 0.517072,-0.103414 1.551215,0.206828"
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;" />
+        <path d="m 63.478861,39.301988 0.723901,0.103414 2.481945,-0.103417"
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;" />
+        <path d="m 71.131524,39.301988 0.620487,-0.103415 2.01658,0.155122"
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;" />
+        <path d="m 77.491508,40.336131 0.568779,0.568779 0.672193,0.93073"
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;" />
+        <path d="m 78.887602,45.817093 0.155121,2.171701"
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;" />
+        <path
+          d="m 83.533087,49.557064 c 0,0 -5.856818,0.283698 -9.609375,0.396604 -3.752557,0.112906 -8.155534,0.726474 -8.997049,8.06632 -0.841515,7.339846 5.930443,8.240479 9.152171,8.376563 3.221728,0.136084 9.033784,0.05239 9.033784,0.05239"
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;" />
+        <path
+          d="m 72.47293,62.500189 c 2.4712,-0.140993 3.791824,-1.540065 4.24125,-4.277813 0.326567,-1.989331 -1.521923,-3.952497 -3.506481,-4.079254 -2.692693,-0.171986 -4.802746,2.420734 -4.720082,4.773942 0.07625,2.17063 2.277269,3.680577 3.985313,3.583125 z"
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;" />
+        <path d="m 85.19668,58.917063 v -0.329062"
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;" />
+        <path
+          d="m 85.452618,56.101751 c 0,0 -0.168059,-2.550352 -0.950625,-3.254063 -0.782566,-0.70371 -2.77875,-0.585 -2.77875,-0.585"
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;" />
+        <path d="m 51.345232,-69.280345 -0.103417,0.723901"
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;" />
+        <path d="m 79.559795,70.171176 -0.258536,1.551215"
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;" />
+        <path
+          d="m 78.991016,75.135065 c 0,0 -0.307646,0.548749 -0.620486,0.775608 -0.31284,0.226859 -1.240972,0.465365 -1.240972,0.465365"
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;" />
+        <path d="m 74.33737,76.789695 -2.326823,0.36195"
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;" />
+        <path d="m 68.64958,77.048231 -2.895603,-0.05171"
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;" />
+        <path d="m 62.393011,76.996524 -1.240973,0.206829 -2.068287,-0.05171"
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;" />
+        <path d="m 55.61937,77.099938 -2.119995,0.05171"
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;" />
+        <path d="m 48.328657,76.841402 -1.861458,0.155122"
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;" />
+        <path d="m 41.606723,76.996524 -1.292679,0.05171 -1.344387,-0.05171"
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;" />
+        <path d="m 34.316011,77.099938 -3.30926,-0.155121"
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;" />
+        <path d="m 26.973591,77.151645 -1.706337,-0.103414"
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;" />
+        <path d="m 20.613607,76.065795 h -0.620486 l -1.344387,-0.723901"
+          style="fill:none;fill-rule:evenodd;stroke:#0e232e;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;" />
+      </g>
+    </svg>
+    <div class="loading">LOADING</div>
+  </div>
+  
+  <script src="https://gcore.jsdelivr.net/gh/LawrenceSivan/cdn@master/js/loader.js" type="text/javascript"></script> -->
+  
+  <div class="scrollbar" id="bar">
+  </div>
+  <a href="#" class="cd-top faa-float animated"></a>
+  <section id="main-container">
+    <div class="headertop filter-dot">
+  <div id="banner_wave_1"></div>
+  <div id="banner_wave_2"></div>
+  <figure id="centerbg" class="centerbg">
+    <div class="focusinfo no-select">
+      <div class="header-tou">
+        <a href="https://lawrencesivan.github.io/">
+          <img src="https://gcore.jsdelivr.net/gh/LawrenceSivan/cdn@master/pictures/avatar.jpg">
+        </a>
+      </div>
+      <div class="header-info">
+        <p>I was so much older then, I&#39;m younger than that now.</p>
+        <div class="top-social_v2">
+          <li id="bg-pre">
+            <img class="flipx" src="https://gcore.jsdelivr.net/gh/honjun/cdn@1.6/img/other/next-b.svg">
+          </li>
+          
+            
+              
+                <li>
+                  <a href="https://github.com/LawrenceSivan" target="_blank" class="social-github" title="github">
+                    <img src="https://gcore.jsdelivr.net/gh/honjun/cdn@1.6/img/social/github.png">
+                  </a>
+                </li>
+              
+            
+              
+                <li>
+                  <a href="https://weibo.com/7464138878/profile?topnav=1&amp;wvr=6" target="_blank" class="social-github" title="sina">
+                    <img src="https://gcore.jsdelivr.net/gh/honjun/cdn@1.6/img/social/sina.png">
+                  </a>
+                </li>
+              
+            
+              
+                <li>
+                  <a href="https://music.163.com/#/user/home?id=296743009" target="_blank" class="social-github" title="wangyiyun">
+                    <img src="https://gcore.jsdelivr.net/gh/honjun/cdn@1.6/img/social/wangyiyun.png">
+                  </a>
+                </li>
+              
+            
+              
+                <li>
+                  <a href="https://www.zhihu.com/people/lawrence-73-19" target="_blank" class="social-github" title="zhihu">
+                    <img src="https://gcore.jsdelivr.net/gh/honjun/cdn@1.6/img/social/zhihu.png">
+                  </a>
+                </li>
+              
+            
+          
+          <li id="bg-next">
+            <img src="https://gcore.jsdelivr.net/gh/honjun/cdn@1.6/img/other/next-b.svg">
+          </li>
+        </div>
+      </div>
+    </div>
+  </figure>
+  <div id="video-container" style="">
+    <video style="object-fit: fill" id="bgvideo" class="video" video-name="" src="" width="auto" preload="auto">
+    </video>
+    <div id="video-btn" class="loadvideo videolive">
+    </div>
+    <div id="video-add">
+    </div>
+    <div class="video-stu">
+    </div>
+  </div>
+  <div class="headertop-down faa-float animated" onclick="headertop_down()">
+    <span>
+      <i class="fa fa-chevron-down" aria-hidden="true">
+      </i>
+    </span>
+  </div>
+</div>
+    <div id="page" class="site wrapper">
+      <header class="site-header no-select gizle sabit" role="banner">
+  <div class="site-top">
+    <div class="site-branding">
+      <span class="site-title">
+        <span class="logolink moe-mashiro">
+          <a href="/">
+            <span class="sakurasono"></span>
+            <span class="shironeko">LawrenceSivan</span>
+          </a>
+        </span>
+      </span>
+    </div>
+    <div class="searchbox search-form-submit">
+      <i class="iconfont js-toggle-search iconsearch icon-search">
+      </i>
+    </div>
+    <div id="show-nav" class="showNav mobile-fit">
+      <div class="line line1">
+      </div>
+      <div class="line line2">
+      </div>
+      <div class="line line3">
+      </div>
+    </div>
+    <div class="lower-cantiner">
+      <div class="lower">
+        <nav class="mobile-fit-control hide">
+          <ul id="menu-new" class="menu">
+            
+              <li>
+                <a href="https://lawrencesivan.github.io/">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-fort-awesome faa-shake" aria-hidden="true"></i>
+                    首页
+                  </span>
+                </a>
+                
+              </li>
+            
+              <li>
+                <a href="https://blog.lawrencesivan.cn/archives">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-archive faa-shake" aria-hidden="true"></i>
+                    归档
+                  </span>
+                </a>
+                
+                  <ul class="sub-menu">
+                    
+                      <li>
+                        <a href="https://blog.lawrencesivan.cn/categories/%E6%8A%80%E6%9C%AF/">
+                          <i class="fa fa-code" aria-hidden="true"></i>
+                          技术
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="https://blog.lawrencesivan.cn/categories/%E7%94%9F%E6%B4%BB/">
+                          <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                          生活
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="https://blog.lawrencesivan.cn/categories/%E4%BB%A3%E7%A0%81/">
+                          <i class="fa fa-cloud-download" aria-hidden="true"></i>
+                          代码
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="https://blog.lawrencesivan.cn/categories/%E9%9A%8F%E6%83%B3/">
+                          <i class="fa fa-commenting-o" aria-hidden="true"></i>
+                          随想
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="https://blog.lawrencesivan.cn/categories/%E8%BD%AC%E8%BD%BD/">
+                          <i class="fa fa-book" aria-hidden="true"></i>
+                          转载
+                        </a>
+                      </li>
+                    
+                  </ul>
+                
+              </li>
+            
+              <li>
+                <a href="javascript:;">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-list-ul faa-vertical" aria-hidden="true"></i>
+                    清单
+                  </span>
+                </a>
+                
+                  <ul class="sub-menu">
+                    
+                      <li>
+                        <a href="https://blog.lawrencesivan.cn/tags/%E6%82%A6%E8%AF%BB/">
+                          <i class="fa fa-th-list faa-bounce" aria-hidden="true"></i>
+                          书单
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="https://blog.lawrencesivan.cn/bangumi/">
+                          <i class="fa fa-film faa-vertical" aria-hidden="true"></i>
+                          番组
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="https://blog.lawrencesivan.cn/music/">
+                          <i class="fa fa-headphones" aria-hidden="true"></i>
+                          歌单
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="https://blog.lawrencesivan.cn/tags/%E5%9B%BE%E9%9B%86/">
+                          <i class="fa fa-photo" aria-hidden="true"></i>
+                          图集
+                        </a>
+                      </li>
+                    
+                  </ul>
+                
+              </li>
+            
+              <li>
+                <a href="https://blog.lawrencesivan.cn/analytics/">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-line-chart" aria-hidden="true"></i>
+                    统计
+                  </span>
+                </a>
+                
+              </li>
+            
+              <li>
+                <a href="https://blog.lawrencesivan.cn/tags/">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-tag" aria-hidden="true"></i>
+                    标签
+                  </span>
+                </a>
+                
+              </li>
+            
+              <li>
+                <a href="https://blog.lawrencesivan.cn/categories/">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-bookmark" aria-hidden="true"></i>
+                    分类
+                  </span>
+                </a>
+                
+              </li>
+            
+              <li>
+                <a href="https://blog.lawrencesivan.cn/comment/">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-pencil-square-o faa-tada" aria-hidden="true"></i>
+                    留言板
+                  </span>
+                </a>
+                
+              </li>
+            
+              <li>
+                <a href="https://blog.lawrencesivan.cn/links/">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-link faa-shake" aria-hidden="true"></i>
+                    友人帐
+                  </span>
+                </a>
+                
+              </li>
+            
+              <li>
+                <a href="https://blog.lawrencesivan.cn/">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-leaf faa-wrench" aria-hidden="true"></i>
+                    关于
+                  </span>
+                </a>
+                
+                  <ul class="sub-menu">
+                    
+                      <li>
+                        <a href="https://blog.lawrencesivan.cn/about/">
+                          <i class="fa fa-meetup" aria-hidden="true"></i>
+                          我？
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="https://blog.lawrencesivan.cn/theme-sakura/">
+                          <i class="fa iconfont icon-sakura" aria-hidden="true"></i>
+                          主题
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="https://blog.lawrencesivan.cn/lab/">
+                          <i class="fa fa-cogs" aria-hidden="true"></i>
+                          Lab
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="https://blog.lawrencesivan.cn/client/">
+                          <i class="fa fa-android faa-vertical" aria-hidden="true"></i>
+                          APP
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="https://blog.lawrencesivan.cn/atom.xml">
+                          <i class="fa fa-rss faa-pulse" aria-hidden="true"></i>
+                          RSS
+                        </a>
+                      </li>
+                    
+                  </ul>
+                
+              </li>
+            
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <link rel="stylesheet" type="text/css" href="/css/sharejs.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+<div class="pattern-center-blank"></div>
+
+  <div class="pattern-center single-center">
+    <!-- 有配图默认渲染第一张 -->
+    <div class="pattern-attachment-img lazyload" style="background-image: url(https://i.loli.net/2021/07/18/BD1uvs94fZymzIJ.jpg);" src="https://gcore.jsdelivr.net/gh/honjun/cdn@1.6/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://i.loli.net/2021/07/18/BD1uvs94fZymzIJ.jpg">
+    </div>
+    <header class="pattern-header single-header">
+      <h1 class="entry-title">
+      二分图题目类型总结与选讲</h1>
+      <p class="entry-census">
+        <span>
+          <a href="https://lawrencesivan.github.io/">
+            <img src="https://gcore.jsdelivr.net/gh/LawrenceSivan/cdn@master/pictures/avatar.jpg">
+          </a>
+        </span>
+        <span>
+          <a href="https://lawrencesivan.github.io/">LawrenceSivan</a>
+        </span>
+        <span class="bull">
+        ·</span>
+        2021-7-18<span class="bull">
+        ·</span>
+      <span id="busuanzi_value_page_pv"></span>次阅读</p>
+    </header>
+  </div>
+
+<div id="content" class="site-content">
+  <div id="primary" class="content-area">
+    <main id="main" class="site-main" role="main">
+      <article id="post-1" class="post-1 post type-post status-publish format-standard has-post-thumbnail hentry category-uncategorized">
+        <div class="toc"></div>
+        <!--<div class="toc-entry-content"><!-- 套嵌目录使用（主要为了支援评论）-->
+        
+        <div class="entry-content">
+          <h1 id="二分图题目类型总结与选讲"><a href="#二分图题目类型总结与选讲" class="headerlink" title="二分图题目类型总结与选讲"></a>二分图题目类型总结与选讲</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>自从上次的决策单调性小结和刚刚更新的莫队全家桶，已经很久没有写过正经的总结类文章了。</p>
+<p>最近也是在复习二分图和网络流，于是借此契机<del>水篇博客</del>总结一下</p>
+<h2 id="二分图理论相关"><a href="#二分图理论相关" class="headerlink" title="二分图理论相关"></a>二分图理论相关</h2><p><strong>二分图 (<em>Bipartite graph</em>)</strong></p>
+<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>如果一张无向图的 $n$ 个节点可以分成 $A,B$ 两个非空集合，其中 $A\bigcap B&#x3D;\varnothing$ ，并且在同一集合内的点都没有边相连，那么称这张图为一张二分图。</p>
+<p>其中，$A，B$ 分别称为这张二分图的左部与右部。</p>
+<h3 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h3><p>一张无向图是二分图，当且仅当途中不存在奇环。</p>
+<h2 id="二分图的判定"><a href="#二分图的判定" class="headerlink" title="二分图的判定"></a>二分图的判定</h2><p> <a href="https://www.luogu.com.cn/problem/P1525">P1525 [NOIP2010 提高组] 关押罪犯</a></p>
+<p>经典中的经典。</p>
+<p>根据二分图的性质，我们可以使用染色法进行二分图的判定。</p>
+<p>具体地，我们使用黑白两种颜色来对二分图进行染色。每次将相邻的两个节点染成不同的颜色。如果在过程中遇到已经被染色，但是现在需要染上另外一种颜色的情况下，那么这张图一定存在奇环，不是二分图。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//#define LawrenceSivan</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">long</span> <span class="type">long</span> ll;</span><br><span class="line"><span class="keyword">typedef</span> <span class="type">unsigned</span> <span class="type">long</span> <span class="type">long</span> ull;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INF 0x3f3f3f3f</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> re register</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxn=<span class="number">1e5</span><span class="number">+5</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n,m;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> head[maxn],to[maxn&lt;&lt;<span class="number">1</span>],nxt[maxn&lt;&lt;<span class="number">1</span>],w[maxn&lt;&lt;<span class="number">1</span>],cnt;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">add</span><span class="params">(<span class="type">int</span> u,<span class="type">int</span> v,<span class="type">int</span> val)</span></span>&#123;</span><br><span class="line">    nxt[++cnt]=head[u];</span><br><span class="line">    to[cnt]=v;</span><br><span class="line">    w[cnt]=val;</span><br><span class="line">    head[u]=cnt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> l=<span class="number">0</span>,r=-INF,vis[maxn],now;</span><br><span class="line"></span><br><span class="line"><span class="type">bool</span> ok;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">dfs</span><span class="params">(<span class="type">int</span> u,<span class="type">int</span> tag)</span></span>&#123;</span><br><span class="line">    vis[u]=tag;</span><br><span class="line">    <span class="keyword">for</span>(re <span class="type">int</span> i=head[u];i;i=nxt[i])&#123;</span><br><span class="line">        <span class="type">int</span> v=to[i];</span><br><span class="line">        <span class="keyword">if</span>(w[i]&gt;now)&#123;</span><br><span class="line">			<span class="keyword">if</span>(!vis[v])<span class="built_in">dfs</span>(v,<span class="number">3</span>-tag);</span><br><span class="line">        	<span class="keyword">else</span> <span class="keyword">if</span>(vis[v]==tag)&#123;</span><br><span class="line">	            ok=<span class="literal">false</span>;</span><br><span class="line">	            <span class="keyword">return</span>;</span><br><span class="line">	        &#125;</span><br><span class="line">	     &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">bool</span> <span class="title">check</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">    <span class="built_in">memset</span>(vis,<span class="number">0</span>,<span class="built_in">sizeof</span>(vis));</span><br><span class="line">    now=x;ok=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>;i&lt;=n&amp;&amp;ok;i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(!vis[i])<span class="built_in">dfs</span>(i,<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> ok;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">read</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> x=<span class="number">0</span>, f=<span class="number">1</span>;<span class="type">char</span> ch=<span class="built_in">getchar</span>();</span><br><span class="line">    <span class="keyword">while</span> (!<span class="built_in">isdigit</span>(ch)) &#123;<span class="keyword">if</span>(ch==<span class="string">&#x27;-&#x27;</span>)f=<span class="number">-1</span>;ch=<span class="built_in">getchar</span>();&#125;</span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">isdigit</span>(ch))&#123;x=x*<span class="number">10</span>+(ch^<span class="number">48</span>);ch=<span class="built_in">getchar</span>();&#125;</span><br><span class="line">    <span class="keyword">return</span> x*f;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> LawrenceSivan</span></span><br><span class="line">    <span class="built_in">freopen</span>(<span class="string">&quot;aa.in&quot;</span>, <span class="string">&quot;r&quot;</span>, stdin);</span><br><span class="line">    <span class="built_in">freopen</span>(<span class="string">&quot;aa.out&quot;</span>, <span class="string">&quot;w&quot;</span>, stdout);</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">    n=<span class="built_in">read</span>();m=<span class="built_in">read</span>();</span><br><span class="line">    <span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>,u,v,val;i&lt;=m;i++)&#123;</span><br><span class="line">        u=<span class="built_in">read</span>();v=<span class="built_in">read</span>();val=<span class="built_in">read</span>();</span><br><span class="line">        <span class="built_in">add</span>(u,v,val);<span class="built_in">add</span>(v,u,val);</span><br><span class="line">        r=<span class="built_in">max</span>(r,val);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(l&lt;r)&#123;</span><br><span class="line">        <span class="type">int</span> mid=(l+r)&gt;&gt;<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">check</span>(mid))r=mid;</span><br><span class="line">        <span class="keyword">else</span> l=mid<span class="number">+1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,l);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="二分图的匹配"><a href="#二分图的匹配" class="headerlink" title="二分图的匹配"></a>二分图的匹配</h2><h3 id="理论知识"><a href="#理论知识" class="headerlink" title="理论知识"></a>理论知识</h3><p><strong>匹配</strong>：任意两条边都没有公共顶点的边的集合被称为图的一组匹配。</p>
+<p><strong>最大匹配</strong>：在二分图中，包含边数最多的一组匹配被称为是二分图的最大匹配。</p>
+<p><strong>匹配边</strong>：对于任意一组匹配 $S$ ，属于 $S$ 的边被称为匹配边，否则为非匹配边。</p>
+<p><strong>匹配点</strong>：匹配边的端点被称为匹配点，否则是非匹配点。</p>
+<p><strong>增广路</strong>：在二分图上一条连接两个非匹配点的路径，使得非匹配边与匹配边在路径上交替出现。</p>
+<p>增广路的性质：</p>
+<ul>
+<li><p>长度是奇数</p>
+</li>
+<li><p>路径上单数号是非匹配边，双数号是匹配边。</p>
+</li>
+</ul>
+<p>于是得出一个性质：如果我们得到了一条增广路，可以将路径上的边全部取反，原来的匹配边变成非匹配边，非匹配边变成匹配边，匹配数会增加 $1$ 。</p>
+<p><strong>完备匹配（完美匹配）</strong>：给定一张左右部点数相同的二分图，如果此二分图的最大匹配包含恰好 $n$ 条匹配边，那么成此匹配为完备匹配（完美匹配）</p>
+<p><strong>多重匹配</strong>：给定一张左部点为 $n$ ，右部点为 $m$ ，的二分图，从中选择尽量多的边，使第 $i$ 个左部节点至多与 $k_{l_i}$ 条选出的边相连,第 $j$ 个右部点最多与 $k_{r_j}$ 条选出的边相连。</p>
+<p>多重匹配是一个广义的匹配问题，二分图最大匹配是 $k_{l_i}&#x3D;k_{r_j}&#x3D;1$ 的特殊情况。</p>
+<h3 id="二分图的最大匹配"><a href="#二分图的最大匹配" class="headerlink" title="二分图的最大匹配"></a>二分图的最大匹配</h3><h4 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h4><p><strong>匈牙利算法（增广路算法）</strong></p>
+<blockquote>
+<p>二分图的一组匹配 $S$ 是最大匹配，当且仅当图中不存在 $S$ 的增广路。 </p>
+</blockquote>
+<p>流程：</p>
+<ul>
+<li>设开始的所有边都是非匹配边</li>
+<li>寻找增广路，把路径上所有边的状态取反；</li>
+<li>重复上面一步，直到图中不存在增广路</li>
+</ul>
+<p>如何寻找增广路？</p>
+<p>依次给每一个左部点寻找一个匹配的右部点，如果右部点没有匹配，那么直接匹配，否则，尝试给和右部点匹配的点寻找新的匹配，之后把这个右部点分给左部点。</p>
+<p>代码简单好写：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">bool</span> <span class="title">find</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(re <span class="type">int</span> i=head[x];i;i=nxt[i])&#123;</span><br><span class="line">        <span class="type">int</span> v=to[i];</span><br><span class="line">        <span class="keyword">if</span>(vis[v])<span class="keyword">continue</span>;</span><br><span class="line">        vis[v]=<span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">if</span>(!match[v]||<span class="built_in">find</span>(match[v]))&#123;</span><br><span class="line">            match[v]=x;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">            <span class="built_in">memset</span>(vis,<span class="number">0</span>,<span class="built_in">sizeof</span>(vis));</span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">find</span>(i))ans++;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>时间复杂度 $\mathcal{O(nm)}$</p>
+<p>例题：<a href="https://www.luogu.com.cn/problem/P2756">P2756 飞行员配对方案问题</a></p>
+<p>板子题，无细节</p>
+<p>唯一要注意的就是开 long long</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//#define LawrenceSivan</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">long</span> <span class="type">long</span> ll;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> re register</span></span><br><span class="line"><span class="type">const</span> ll maxn = <span class="number">5e5</span><span class="number">+5</span>;</span><br><span class="line"></span><br><span class="line">ll n,m,ans;</span><br><span class="line">ll head[maxn],nxt[maxn],to[maxn],cnt,match[maxn];</span><br><span class="line"><span class="type">bool</span> vis[maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">add</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y)</span></span>&#123;</span><br><span class="line">	to[++cnt]=y;</span><br><span class="line">	nxt[cnt]=head[x];</span><br><span class="line">	head[x]=cnt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">find</span><span class="params">(ll u)</span></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(ll i=head[u];i;i=nxt[i])&#123;</span><br><span class="line">		ll v=to[i];</span><br><span class="line">		<span class="keyword">if</span>(vis[v])<span class="keyword">continue</span>;</span><br><span class="line">		vis[v]=<span class="literal">true</span>;</span><br><span class="line">		<span class="keyword">if</span>(!match[v]||<span class="built_in">find</span>(match[v]))&#123;</span><br><span class="line">			match[v]=u;</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> ll <span class="title">read</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ll x = <span class="number">0</span>, f = <span class="number">1</span>;<span class="type">char</span> ch = <span class="built_in">getchar</span>();</span><br><span class="line">    <span class="keyword">while</span> (!<span class="built_in">isdigit</span>(ch)) &#123;<span class="keyword">if</span>(ch==<span class="string">&#x27;-&#x27;</span>)f=<span class="number">-1</span>;ch=<span class="built_in">getchar</span>();&#125;</span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">isdigit</span>(ch))&#123;x=x*<span class="number">10</span>+(ch^<span class="number">48</span>);ch=<span class="built_in">getchar</span>();&#125;</span><br><span class="line">    <span class="keyword">return</span> x * f;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> LawrenceSivan</span></span><br><span class="line">    <span class="built_in">freopen</span>(<span class="string">&quot;aa.in&quot;</span>, <span class="string">&quot;r&quot;</span>, stdin);</span><br><span class="line">    <span class="built_in">freopen</span>(<span class="string">&quot;aa.out&quot;</span>, <span class="string">&quot;w&quot;</span>, stdout);</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">	n=<span class="built_in">read</span>();m=<span class="built_in">read</span>();</span><br><span class="line">	ll x,y;</span><br><span class="line">	<span class="keyword">while</span>(~<span class="built_in">scanf</span>(<span class="string">&quot;%lld%lld&quot;</span>,&amp;x,&amp;y))&#123;</span><br><span class="line">		<span class="keyword">if</span>(x==<span class="number">-1</span>&amp;&amp;y==<span class="number">-1</span>)<span class="keyword">break</span>;</span><br><span class="line">		<span class="built_in">add</span>(x,y);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span>(re ll i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">		<span class="built_in">memset</span>(vis,<span class="number">0</span>,<span class="built_in">sizeof</span>(vis));</span><br><span class="line">		<span class="keyword">if</span>(<span class="built_in">find</span>(i))ans++;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%lld\n&quot;</span>,ans);</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span>(ll i=n<span class="number">+1</span>;i&lt;=m;i++)&#123;</span><br><span class="line">		<span class="keyword">if</span>(match[i])<span class="built_in">printf</span>(<span class="string">&quot;%lld %lld\n&quot;</span>,match[i],i);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://www.luogu.com.cn/problem/P1129">P1129 [ZJOI2007] 矩阵游戏</a></p>
+<p>给定一块棋盘，上面有一些点，问经过行行互换与列列互换能否实现所有对角线上都有点</p>
+<p>目标状态是 $(1,1),(2,2),(3,3)…$ 都要有一个点。</p>
+<p>于是我们可以把点看成是一条边，这条边连接了这个点的横纵坐标。</p>
+<p>于是就是说每行和每一列都要有匹配。</p>
+<p>可以发现交换两行或者两列的操作并不会影响匹配。</p>
+<p>因为如果两个点一开始不在一行或者一列，那么无论怎么交换都不会出现在一行或者一列</p>
+<p>就是说交换不影响匹配数。</p>
+<p>于是我们就要求匹配数恰好为点数</p>
+<p>建图的话每次把一个点的行号和列号连接起来。</p>
+<p>可以看做是用第 $i$ 行 第 $j$ 列的 $1$ 去交换同一行 对角线上的 $1$ ；</p>
+<p>求最大匹配即可：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//#define LawrenceSivan</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">long</span> <span class="type">long</span> ll;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INF 0x3f3f3f3f</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> re register</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxn=<span class="number">4e4</span><span class="number">+5</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> T,n,ans;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> head[maxn],to[maxn&lt;&lt;<span class="number">1</span>],nxt[maxn&lt;&lt;<span class="number">1</span>],cnt;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">add</span><span class="params">(<span class="type">int</span> u,<span class="type">int</span> v)</span></span>&#123;</span><br><span class="line">    nxt[++cnt]=head[u];</span><br><span class="line">    to[cnt]=v;</span><br><span class="line">    head[u]=cnt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> match[maxn],a[<span class="number">205</span>][<span class="number">205</span>];</span><br><span class="line"></span><br><span class="line"><span class="type">bool</span> vis[maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">find</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(re <span class="type">int</span> i=head[x];i;i=nxt[i])&#123;</span><br><span class="line">        <span class="type">int</span> v=to[i];</span><br><span class="line">        <span class="keyword">if</span>(vis[v])<span class="keyword">continue</span>;</span><br><span class="line">        vis[v]=<span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">if</span>(!match[v]||<span class="built_in">find</span>(match[v]))&#123;</span><br><span class="line">            match[v]=x;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">init</span><span class="params">()</span></span>&#123;</span><br><span class="line">    ans=<span class="number">0</span>;</span><br><span class="line">    <span class="built_in">memset</span>(match,<span class="number">0</span>,<span class="built_in">sizeof</span>(match));</span><br><span class="line">    <span class="built_in">memset</span>(head,<span class="number">0</span>,<span class="built_in">sizeof</span>(head));</span><br><span class="line">    <span class="built_in">memset</span>(vis,<span class="number">0</span>,<span class="built_in">sizeof</span>(vis));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">read</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> x=<span class="number">0</span>, f=<span class="number">1</span>;<span class="type">char</span> ch=<span class="built_in">getchar</span>();</span><br><span class="line">    <span class="keyword">while</span> (!<span class="built_in">isdigit</span>(ch)) &#123;<span class="keyword">if</span>(ch==<span class="string">&#x27;-&#x27;</span>)f=<span class="number">-1</span>;ch=<span class="built_in">getchar</span>();&#125;</span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">isdigit</span>(ch))&#123;x=x*<span class="number">10</span>+(ch^<span class="number">48</span>);ch=<span class="built_in">getchar</span>();&#125;</span><br><span class="line">    <span class="keyword">return</span> x*f;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> LawrenceSivan</span></span><br><span class="line">    <span class="built_in">freopen</span>(<span class="string">&quot;aa.in&quot;</span>, <span class="string">&quot;r&quot;</span>, stdin);</span><br><span class="line">    <span class="built_in">freopen</span>(<span class="string">&quot;aa.out&quot;</span>, <span class="string">&quot;w&quot;</span>, stdout);</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">    T=<span class="built_in">read</span>();</span><br><span class="line">    <span class="keyword">while</span>(T--)&#123;</span><br><span class="line">        n=<span class="built_in">read</span>();</span><br><span class="line">        <span class="built_in">init</span>();</span><br><span class="line">        <span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(re <span class="type">int</span> j=<span class="number">1</span>;j&lt;=n;j++)&#123;</span><br><span class="line">                a[i][j]=<span class="built_in">read</span>();</span><br><span class="line">                <span class="keyword">if</span>(a[i][j])<span class="built_in">add</span>(i,j);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">            <span class="built_in">memset</span>(vis,<span class="number">0</span>,<span class="built_in">sizeof</span>(vis));</span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">find</span>(i))ans++;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        ans&gt;=n?<span class="built_in">puts</span>(<span class="string">&quot;Yes&quot;</span>):<span class="built_in">puts</span>(<span class="string">&quot;No&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a href="https://www.luogu.com.cn/problem/P2825">P2825 [HEOI2016&#x2F;TJOI2016]游戏</a></p>
+<p>经典套路了。</p>
+<p>有石头的位置不能放。</p>
+<p>石头分为硬石头和软石头，硬石头炸不穿，软石头能炸碎。</p>
+<p>硬石头可以将一行或者一列分隔开，可以认为是一行新的和一列新的。</p>
+<p>于是我们给每一个连续的极长不可扩展的一块一个新的编号。</p>
+<p>之后横竖建边，跑最大匹配就好了。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//#define LawrenceSivan</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">long</span> <span class="type">long</span> ll;</span><br><span class="line"><span class="keyword">typedef</span> <span class="type">unsigned</span> <span class="type">long</span> <span class="type">long</span> ull;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INF 0x3f3f3f3f</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> re register</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxn=<span class="number">2005</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> head[maxn],to[maxn],nxt[maxn],cnt;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">add</span><span class="params">(<span class="type">int</span> u,<span class="type">int</span> v)</span></span>&#123;</span><br><span class="line">	nxt[++cnt]=head[u];</span><br><span class="line">	to[cnt]=v;</span><br><span class="line">	head[u]=cnt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n,m,tot;</span><br><span class="line"></span><br><span class="line"><span class="type">char</span> mp[maxn][maxn];</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> l[maxn][maxn],r[maxn][maxn];</span><br><span class="line"></span><br><span class="line"><span class="type">bool</span> vis[maxn];</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> match[maxn],ans;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">dfs</span><span class="params">(<span class="type">int</span> u)</span></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(re <span class="type">int</span> i=head[u];i;i=nxt[i])&#123;</span><br><span class="line">		<span class="type">int</span> v=to[i];</span><br><span class="line">		<span class="keyword">if</span>(vis[v])<span class="keyword">continue</span>;</span><br><span class="line">		vis[v]=<span class="literal">true</span>;</span><br><span class="line">		<span class="keyword">if</span>(!match[v]||<span class="built_in">dfs</span>(match[v]))&#123;</span><br><span class="line">			match[v]=u;</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">read</span><span class="params">(T &amp;x)</span></span>&#123;</span><br><span class="line">    x=<span class="number">0</span>;T f=<span class="number">1</span>;<span class="type">char</span> ch=<span class="built_in">getchar</span>();</span><br><span class="line">    <span class="keyword">while</span> (!<span class="built_in">isdigit</span>(ch)) &#123;<span class="keyword">if</span>(ch==<span class="string">&#x27;-&#x27;</span>)f=<span class="number">-1</span>;ch=<span class="built_in">getchar</span>();&#125;</span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">isdigit</span>(ch))&#123;x=x*<span class="number">10</span>+(ch^<span class="number">48</span>);ch=<span class="built_in">getchar</span>();&#125;</span><br><span class="line">    x*=f;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">signed</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> LawrenceSivan</span></span><br><span class="line">    <span class="built_in">freopen</span>(<span class="string">&quot;aa.in&quot;</span>, <span class="string">&quot;r&quot;</span>, stdin);</span><br><span class="line">    <span class="built_in">freopen</span>(<span class="string">&quot;aa.out&quot;</span>, <span class="string">&quot;w&quot;</span>, stdout);</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">	<span class="built_in">read</span>(n),<span class="built_in">read</span>(m);</span><br><span class="line">	<span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">		cin&gt;&gt;mp[i]<span class="number">+1</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">		<span class="keyword">for</span>(re <span class="type">int</span> j=<span class="number">1</span>;j&lt;=m;j++)&#123;</span><br><span class="line">			<span class="keyword">if</span>(mp[i][j]==<span class="string">&#x27;#&#x27;</span>)<span class="keyword">continue</span>;</span><br><span class="line">			<span class="keyword">if</span>(j==<span class="number">1</span>||mp[i][j<span class="number">-1</span>]==<span class="string">&#x27;#&#x27;</span>)tot++;</span><br><span class="line">			l[i][j]=tot;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span>(re <span class="type">int</span> j=<span class="number">1</span>;j&lt;=m;j++)&#123;</span><br><span class="line">		<span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">			<span class="keyword">if</span>(mp[i][j]==<span class="string">&#x27;#&#x27;</span>)<span class="keyword">continue</span>;</span><br><span class="line">			<span class="keyword">if</span>(i==<span class="number">1</span>||mp[i<span class="number">-1</span>][j]==<span class="string">&#x27;#&#x27;</span>)tot++;</span><br><span class="line">			r[i][j]=tot;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">		<span class="keyword">for</span>(re <span class="type">int</span> j=<span class="number">1</span>;j&lt;=m;j++)&#123;</span><br><span class="line">			<span class="keyword">if</span>(mp[i][j]!=<span class="string">&#x27;*&#x27;</span>)<span class="keyword">continue</span>;</span><br><span class="line">			<span class="built_in">add</span>(l[i][j],r[i][j]);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>;i&lt;=tot;i++)&#123;</span><br><span class="line">		<span class="built_in">memset</span>(vis,<span class="literal">false</span>,<span class="built_in">sizeof</span>(vis));</span><br><span class="line">		<span class="keyword">if</span>(<span class="built_in">dfs</span>(i))ans++;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,ans);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="二分图的多重匹配"><a href="#二分图的多重匹配" class="headerlink" title="二分图的多重匹配"></a>二分图的多重匹配</h3><p>解决方案：</p>
+<ul>
+<li>拆点：能连几条边就拆成几个点</li>
+<li>如果只有一侧是多重的，那么直接让多重的一侧每个点执行 $k$ 次。</li>
+<li>允许一个点被匹配多次，超过次数以后再寻求改变匹配</li>
+<li>网络流（网络流大法吼啊！</li>
+</ul>
+<p>还没写过，先咕着</p>
+<h3 id="二分图的带权匹配"><a href="#二分图的带权匹配" class="headerlink" title="二分图的带权匹配"></a>二分图的带权匹配</h3><p>给定一张二分图，每一条边都有一个权值，求出最大匹配，并要求边权和最大。</p>
+<p>第一目的是最大匹配，其次是边权要求。</p>
+<h4 id="算法-1"><a href="#算法-1" class="headerlink" title="算法"></a>算法</h4><p><strong>KM算法</strong></p>
+<ul>
+<li>稠密图上效率很高</li>
+<li>只能满足带权最大匹配一定是完备匹配的问题</li>
+</ul>
+<p><strong>交错树</strong>：如果在匹配过程中，从某个左部点出发寻找匹配失败，在 dfs 过程中，所经过的点及边共同构成了一棵树——交错树</p>
+<p>交错树的根节点是左部节点，叶子节点也都是左部节点，奇数层是非匹配边，偶数层是匹配边。</p>
+<p><strong>顶点标记值（顶标）</strong>：给每一个左部点一个标记 $la_i$ ，右部点一个标记 $lb_i$ 。必须满足 $la_i+lb_i\ge w(i,j)$ .</p>
+<p><strong>相等子图</strong>：所有节点与满足 $la_i+lb_i &#x3D; w(i,j)$ 的边构成的子图。 </p>
+<p><strong>定理</strong></p>
+<blockquote>
+<p> 若相等子图中存在完备匹配，那么这个完备匹配就是二分图的最大带权匹配</p>
+</blockquote>
+<p>证明：</p>
+<blockquote>
+<p>相等子图中，完备匹配的边权和就是顶标之和，而因为 $la_i+lb_i\ge w(i,j)$ ，所以权值无法扩展。</p>
+</blockquote>
+<p>算法过程：</p>
+<ol>
+<li>满足顶标定义的前提下，首先给每个顶点任意附顶标，之后不断扩大相等子图的规模，直到相等子图存在完备匹配。通常赋值为 $la_i&#x3D;\max \limits_{1\le j\le n} {w(i,j}$ ，$lb_i&#x3D;0$.</li>
+<li>每找到一个相等子图，就用匈牙利算法求最大匹配。如果最大匹配不完备，就会形成交错树。</li>
+<li>每次将交错树中所有左部点的顶标都减去一个 $delta$ ，右部点顶标都加上 $delta$ 。</li>
+<li>重复上述过程</li>
+</ol>
+<p><a href="https://www.luogu.com.cn/problem/UVA1411">UVA1411 Ants</a></p>
+<p>给定一些黑点白点，要求一个黑点连接一个白点，并且所有线段不相交</p>
+<p><img src="https://i.loli.net/2021/07/18/xaDIQHe4qTP6fMp.png"></p>
+<p>可以发现，如果黑白连线相交，我们可以通过交换的方式使得不相交，并且相交之后线段变短。</p>
+<p>求解二分图最小权最大匹配。</p>
+<p>把权值写成负数，然后跑最大权最大匹配就行了。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//#define LawrenceSivan</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">long</span> <span class="type">long</span> ll;</span><br><span class="line"><span class="keyword">typedef</span> <span class="type">unsigned</span> <span class="type">long</span> <span class="type">long</span> ull;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INF 0x3f3f3f3f</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> re register</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxn=<span class="number">105</span>;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> debug cerr&lt;&lt;<span class="string">&quot;!!!!!!!!!!!!!!!!!!!!!!!!!&quot;</span>&lt;&lt;endl; </span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n;</span><br><span class="line"></span><br><span class="line"><span class="type">double</span> la[maxn],lb[maxn];</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> match[maxn];</span><br><span class="line"></span><br><span class="line"><span class="type">double</span> upd[maxn],delta;</span><br><span class="line"></span><br><span class="line"><span class="type">bool</span> va[maxn],vb[maxn];</span><br><span class="line"></span><br><span class="line"><span class="type">double</span> xl[maxn],yl[maxn];</span><br><span class="line"></span><br><span class="line"><span class="type">double</span> xr[maxn],yr[maxn];</span><br><span class="line"></span><br><span class="line"><span class="type">double</span> w[maxn][maxn];</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">double</span> eps=<span class="number">1e-8</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">double</span> <span class="title">dis</span><span class="params">(<span class="type">double</span> x,<span class="type">double</span> y,<span class="type">double</span> xx,<span class="type">double</span> yy)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">sqrt</span>((x-xx)*(x-xx)+(y-yy)*(y-yy));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">dfs</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">    va[x]=<span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">for</span>(re <span class="type">int</span> y=<span class="number">1</span>;y&lt;=n;y++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(!vb[y])&#123;</span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">fabs</span>(la[x]+lb[y]-w[x][y]&lt;eps))&#123;</span><br><span class="line">                vb[y]=<span class="literal">true</span>;</span><br><span class="line">                <span class="keyword">if</span>(!match[y]||<span class="built_in">dfs</span>(match[y]))&#123;</span><br><span class="line">                    match[y]=x;</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> upd[y]=<span class="built_in">min</span>(upd[y],la[x]+lb[y]-w[x][y]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">KM</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="built_in">memset</span>(match,<span class="number">0</span>,<span class="built_in">sizeof</span>(match));</span><br><span class="line">    <span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        la[i]=-INF;lb[i]=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(re <span class="type">int</span> j=<span class="number">1</span>;j&lt;=n;j++)&#123;</span><br><span class="line">            la[i]=<span class="built_in">max</span>(la[i],w[i][j]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">            <span class="built_in">memset</span>(va,<span class="number">0</span>,<span class="built_in">sizeof</span>(va));</span><br><span class="line">            <span class="built_in">memset</span>(vb,<span class="number">0</span>,<span class="built_in">sizeof</span>(vb));</span><br><span class="line">            <span class="keyword">for</span>(re <span class="type">int</span> j=<span class="number">1</span>;j&lt;=n;j++)upd[j]=INF;</span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">dfs</span>(i))<span class="keyword">break</span>;</span><br><span class="line">            delta=INF;</span><br><span class="line">            <span class="keyword">for</span>(re <span class="type">int</span> j=<span class="number">1</span>;j&lt;=n;j++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(!vb[j])delta=<span class="built_in">min</span>(delta,upd[j]);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span>(re <span class="type">int</span> j=<span class="number">1</span>;j&lt;=n;j++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(va[j])la[j]-=delta;</span><br><span class="line">                <span class="keyword">if</span>(vb[j])lb[j]+=delta;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,match[i]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">read</span><span class="params">(T &amp;x)</span></span>&#123;</span><br><span class="line">    x=<span class="number">0</span>;T f=<span class="number">1</span>;<span class="type">char</span> ch=<span class="built_in">getchar</span>();</span><br><span class="line">    <span class="keyword">while</span> (!<span class="built_in">isdigit</span>(ch)) &#123;<span class="keyword">if</span>(ch==<span class="string">&#x27;-&#x27;</span>)f=<span class="number">-1</span>;ch=<span class="built_in">getchar</span>();&#125;</span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">isdigit</span>(ch))&#123;x=x*<span class="number">10</span>+(ch^<span class="number">48</span>);ch=<span class="built_in">getchar</span>();&#125;</span><br><span class="line">    x*=f;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> LawrenceSivan</span></span><br><span class="line">    <span class="built_in">freopen</span>(<span class="string">&quot;aa.in&quot;</span>, <span class="string">&quot;r&quot;</span>, stdin);</span><br><span class="line">    <span class="built_in">freopen</span>(<span class="string">&quot;aa.out&quot;</span>, <span class="string">&quot;w&quot;</span>, stdout);</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">	<span class="keyword">while</span>(~<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;n)&amp;&amp;n)&#123;</span><br><span class="line">	    <span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">	        <span class="built_in">scanf</span>(<span class="string">&quot;%lf%lf&quot;</span>,&amp;xl[i],&amp;yl[i]);</span><br><span class="line">	    &#125;</span><br><span class="line">	    <span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">	        <span class="built_in">scanf</span>(<span class="string">&quot;%lf%lf&quot;</span>,&amp;xr[i],&amp;yr[i]);</span><br><span class="line">	    &#125;</span><br><span class="line">	    </span><br><span class="line">	    <span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">	        <span class="keyword">for</span>(re <span class="type">int</span> j=<span class="number">1</span>;j&lt;=n;j++)&#123;</span><br><span class="line">	            w[j][i]=-<span class="built_in">dis</span>(xl[i],yl[i],xr[j],yr[j]);</span><br><span class="line">	        &#125;</span><br><span class="line">	    &#125;</span><br><span class="line">	    </span><br><span class="line">	    <span class="built_in">KM</span>();</span><br><span class="line">	&#125;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="二分图的覆盖与独立集"><a href="#二分图的覆盖与独立集" class="headerlink" title="二分图的覆盖与独立集"></a>二分图的覆盖与独立集</h2><h3 id="二分图的最小点覆盖"><a href="#二分图的最小点覆盖" class="headerlink" title="二分图的最小点覆盖"></a>二分图的最小点覆盖</h3><p>给定一张二分图，求出一个最小的点集 $S$ 。使得图中任意一条边都有至少一个端点属于 $S$ </p>
+<p><strong>二分图的最小点覆盖的点数 $&#x3D;$ 二分图最大匹配的边数</strong></p>
+<p>简单记作：最小点覆盖等于最大匹配、</p>
+<p>构造方法：</p>
+<ol>
+<li><p>求出最大匹配</p>
+</li>
+<li><p>从左部每一个非匹配点出发，执行一次寻找增广路的过程，标记经过的节点。</p>
+</li>
+<li><p>取左部未被标记的节点与右部被标记的节点。</p>
+</li>
+</ol>
+<p><a href="https://www.luogu.com.cn/problem/P7368">P7368 [USACO05NOV]Asteroids G</a></p>
+<p>发现问题是这样的。</p>
+<p>一颗小星星一定会出现在一行与一列的交汇点，所以可以选择在消灭行时消灭，也可以在消灭列时消灭。</p>
+<p>只要有一个覆盖即可。</p>
+<p>把小星星的坐标看成一条边的两个端点，只要其中一个节点被覆盖就达成了目的。</p>
+<p>建图跑最大匹配，因为最小点覆盖等于最大匹配，所以直接输出就好了</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//#define LawrenceSivan</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">long</span> <span class="type">long</span> ll;</span><br><span class="line"><span class="keyword">typedef</span> <span class="type">unsigned</span> <span class="type">long</span> <span class="type">long</span> ull;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INF 0x3f3f3f3f</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> re register</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxn=<span class="number">25005</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n,k,ans;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> head[maxn],to[maxn],nxt[maxn],cnt;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">add</span><span class="params">(<span class="type">int</span> u,<span class="type">int</span> v)</span></span>&#123;</span><br><span class="line">    nxt[++cnt]=head[u];</span><br><span class="line">    to[cnt]=v;</span><br><span class="line">    head[u]=cnt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> match[maxn];</span><br><span class="line"></span><br><span class="line"><span class="type">bool</span> vis[maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">dfs</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(re <span class="type">int</span> i=head[x];i;i=nxt[i])&#123;</span><br><span class="line">        <span class="type">int</span> v=to[i];</span><br><span class="line">        <span class="keyword">if</span>(vis[v])<span class="keyword">continue</span>;</span><br><span class="line">        vis[v]=<span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">if</span>(!match[v]||<span class="built_in">dfs</span>(match[v]))&#123;</span><br><span class="line">            match[v]=x;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">read</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> x=<span class="number">0</span>, f=<span class="number">1</span>;<span class="type">char</span> ch=<span class="built_in">getchar</span>();</span><br><span class="line">    <span class="keyword">while</span> (!<span class="built_in">isdigit</span>(ch)) &#123;<span class="keyword">if</span>(ch==<span class="string">&#x27;-&#x27;</span>)f=<span class="number">-1</span>;ch=<span class="built_in">getchar</span>();&#125;</span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">isdigit</span>(ch))&#123;x=x*<span class="number">10</span>+(ch^<span class="number">48</span>);ch=<span class="built_in">getchar</span>();&#125;</span><br><span class="line">    <span class="keyword">return</span> x*f;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> LawrenceSivan</span></span><br><span class="line">    <span class="built_in">freopen</span>(<span class="string">&quot;aa.in&quot;</span>, <span class="string">&quot;r&quot;</span>, stdin);</span><br><span class="line">    <span class="built_in">freopen</span>(<span class="string">&quot;aa.out&quot;</span>, <span class="string">&quot;w&quot;</span>, stdout);</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">    n=<span class="built_in">read</span>();k=<span class="built_in">read</span>();</span><br><span class="line">    <span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>,x,y;i&lt;=k;i++)&#123;</span><br><span class="line">        x=<span class="built_in">read</span>();y=<span class="built_in">read</span>();</span><br><span class="line">        <span class="built_in">add</span>(x,y);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        <span class="built_in">memset</span>(vis,<span class="number">0</span>,<span class="built_in">sizeof</span>(vis));</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">dfs</span>(i))ans++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,ans);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p><a href="https://www.luogu.com.cn/problem/P6062">P6062 [USACO05JAN]Muddy Fields G</a></p>
+<p>每块泥地要不然被横着的一行盖住，要不被纵着的一列盖住。</p>
+<p>木板不能盖住干净地面，所以木板所遮盖的必然是一块极大不可扩展的泥地方格。</p>
+<p>预处理出所有的横着的极大方格和纵着的极大方格，横纵建边。</p>
+<p>求解最小点覆盖</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//#define LawrenceSivan</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">long</span> <span class="type">long</span> ll;</span><br><span class="line"><span class="keyword">typedef</span> <span class="type">unsigned</span> <span class="type">long</span> <span class="type">long</span> ull;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INF 0x3f3f3f3f</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> re register</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxn=<span class="number">1005</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxm=<span class="number">55</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n,m,ans;</span><br><span class="line"></span><br><span class="line"><span class="type">char</span> a[<span class="number">55</span>][<span class="number">55</span>];</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> head[maxn],to[maxn],nxt[maxn],cnt;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">add</span><span class="params">(<span class="type">int</span> u,<span class="type">int</span> v)</span></span>&#123;</span><br><span class="line">    nxt[++cnt]=head[u];</span><br><span class="line">    to[cnt]=v;</span><br><span class="line">    head[u]=cnt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> L[maxm][maxm],R[maxm][maxm],cnt1,cnt2;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> match[maxn];</span><br><span class="line"></span><br><span class="line"><span class="type">bool</span> vis[maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">dfs</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(re <span class="type">int</span> i=head[x];i;i=nxt[i])&#123;</span><br><span class="line">        <span class="type">int</span> v=to[i];</span><br><span class="line">        <span class="keyword">if</span>(vis[v])<span class="keyword">continue</span>;</span><br><span class="line">        vis[v]=<span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">if</span>(!match[v]||<span class="built_in">dfs</span>(match[v]))&#123;</span><br><span class="line">            match[v]=x;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">read</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> x=<span class="number">0</span>, f=<span class="number">1</span>;<span class="type">char</span> ch=<span class="built_in">getchar</span>();</span><br><span class="line">    <span class="keyword">while</span> (!<span class="built_in">isdigit</span>(ch)) &#123;<span class="keyword">if</span>(ch==<span class="string">&#x27;-&#x27;</span>)f=<span class="number">-1</span>;ch=<span class="built_in">getchar</span>();&#125;</span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">isdigit</span>(ch))&#123;x=x*<span class="number">10</span>+(ch^<span class="number">48</span>);ch=<span class="built_in">getchar</span>();&#125;</span><br><span class="line">    <span class="keyword">return</span> x*f;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> LawrenceSivan</span></span><br><span class="line">    <span class="built_in">freopen</span>(<span class="string">&quot;aa.in&quot;</span>, <span class="string">&quot;r&quot;</span>, stdin);</span><br><span class="line">    <span class="built_in">freopen</span>(<span class="string">&quot;aa.out&quot;</span>, <span class="string">&quot;w&quot;</span>, stdout);</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">    n=<span class="built_in">read</span>();m=<span class="built_in">read</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        cin&gt;&gt;a[i]<span class="number">+1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(re <span class="type">int</span> j=<span class="number">1</span>;j&lt;=m;j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(a[i][j]==<span class="string">&#x27;*&#x27;</span>)&#123;</span><br><span class="line">                <span class="keyword">if</span>(j==<span class="number">1</span>||a[i][j<span class="number">-1</span>]==<span class="string">&#x27;.&#x27;</span>)L[i][j]=++cnt1;</span><br><span class="line">                <span class="keyword">else</span> L[i][j]=cnt1;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>;i&lt;=m;i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(re <span class="type">int</span> j=<span class="number">1</span>;j&lt;=n;j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(a[j][i]==<span class="string">&#x27;*&#x27;</span>)&#123;</span><br><span class="line">                <span class="keyword">if</span>(j==<span class="number">1</span>||a[j<span class="number">-1</span>][i]==<span class="string">&#x27;.&#x27;</span>)R[j][i]=++cnt2;</span><br><span class="line">                <span class="keyword">else</span> R[j][i]=cnt2;</span><br><span class="line">                <span class="built_in">add</span>(L[j][i],R[j][i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>;i&lt;=cnt1;i++)&#123;</span><br><span class="line">        <span class="built_in">memset</span>(vis,<span class="number">0</span>,<span class="built_in">sizeof</span>(vis));</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">dfs</span>(i))ans++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,ans);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="二分图最大独立集"><a href="#二分图最大独立集" class="headerlink" title="二分图最大独立集"></a>二分图最大独立集</h3><p><strong>独立集</strong>：给定一张二分图，将其划分成若干个点集，使得任意两点之间没有边相连。</p>
+<p><strong>最大独立集</strong>：独立集里面最大的那个</p>
+<p><strong>团</strong>：任意两点都有边相连的子图</p>
+<p><strong>最大团</strong>：最大的那个</p>
+<p><strong>无向图的最大团等于其补图的最大独立集</strong></p>
+<p>对于<strong>一般无向图</strong>，求解最大团，最大独立集是 NP 完全问题。</p>
+<p><strong>定理</strong></p>
+<blockquote>
+<p> 二分图最大独立集是 $&#x3D;$ 总点数 $-$ 最大匹配数</p>
+</blockquote>
+<p> 去掉最小点覆盖就是最大独立集。</p>
+<p> 即最大独立集就是最小点覆盖关于全图点数的补集。</p>
+<p><a href="https://www.luogu.com.cn/problem/P3355">P3355 骑士共存问题</a></p>
+<p>将图进行黑白染色，每次把“日”字格子的两角建边，跑最大独立集即可</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxn=<span class="number">1e6</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> dx[<span class="number">8</span>]=&#123;<span class="number">-1</span>,<span class="number">-2</span>,<span class="number">-2</span>,<span class="number">-1</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>&#125;;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> dy[<span class="number">8</span>]=&#123;<span class="number">-2</span>,<span class="number">-1</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">-1</span>,<span class="number">-2</span>&#125;;</span><br><span class="line"><span class="type">int</span> n,m,cnt,ans;</span><br><span class="line"></span><br><span class="line"><span class="type">bool</span> mapp[<span class="number">2005</span>][<span class="number">2005</span>];</span><br><span class="line"><span class="type">bool</span> vis[<span class="number">100005</span>];</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> match[<span class="number">100005</span>],head[maxn];</span><br><span class="line"></span><br><span class="line">vector &lt;<span class="type">int</span>&gt; node;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">edge</span>&#123;</span><br><span class="line">	<span class="type">int</span> next,to;</span><br><span class="line">&#125;e[maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">add</span><span class="params">(<span class="type">int</span> u,<span class="type">int</span> v)</span></span>&#123;</span><br><span class="line">	e[++cnt].next=head[u];</span><br><span class="line">	e[cnt].to=v;</span><br><span class="line">	head[u]=cnt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">find</span><span class="params">(<span class="type">int</span> u)</span></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=head[u];i;i=e[i].next)&#123;</span><br><span class="line">		<span class="type">int</span> v=e[i].to;</span><br><span class="line">		<span class="keyword">if</span>(!vis[v])&#123;</span><br><span class="line">			vis[v]=<span class="number">1</span>;</span><br><span class="line">			<span class="keyword">if</span>(match[v]==<span class="number">-1</span>||<span class="built_in">find</span>(match[v]))&#123;</span><br><span class="line">				match[v]=u;</span><br><span class="line">				<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; </span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>,x,y;i&lt;=m;i++)&#123;</span><br><span class="line">		cin&gt;&gt;x&gt;&gt;y;</span><br><span class="line">		mapp[x][y]=<span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">1</span>;j&lt;=n;j++)&#123;</span><br><span class="line">			<span class="keyword">if</span>(!mapp[i][j]&amp;&amp;(i+j)%<span class="number">2</span>)&#123;<span class="comment">//遍历图，如果没有障碍就黑白染色</span></span><br><span class="line">				node.<span class="built_in">push_back</span>(n*(i<span class="number">-1</span>)+j);<span class="comment">//把行列抻直了使用1—n^2作为编号</span></span><br><span class="line">				<span class="keyword">for</span>(<span class="type">int</span> k=<span class="number">0</span>;k&lt;<span class="number">8</span>;k++)&#123;<span class="comment">//对可以扩展出的8个可能的日字的对角点连边</span></span><br><span class="line">					<span class="type">int</span> xx=i+dx[k];</span><br><span class="line">					<span class="type">int</span> yy=j+dy[k];</span><br><span class="line">					<span class="keyword">if</span>(xx&lt;=<span class="number">0</span>||xx&gt;n||yy&lt;=<span class="number">0</span>||yy&gt;n)<span class="keyword">continue</span>;</span><br><span class="line">					<span class="keyword">if</span>(!mapp[xx][yy])&#123;</span><br><span class="line">						<span class="built_in">add</span>(n*(i<span class="number">-1</span>)+j,n*(xx<span class="number">-1</span>)+yy);</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="built_in">memset</span>(match,<span class="number">-1</span>,<span class="built_in">sizeof</span>(match));</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;node.<span class="built_in">size</span>();i++)&#123;<span class="comment">//冲冲冲！</span></span><br><span class="line">		<span class="built_in">memset</span>(vis,<span class="number">0</span>,<span class="built_in">sizeof</span>(vis));</span><br><span class="line">		ans+=<span class="built_in">find</span>(node[i]);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	cout&lt;&lt;n*n-m-ans;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+<p><a href="https://www.luogu.com.cn/problem/P2423">P2423 [HEOI2012]朋友圈</a></p>
+<p>有两个国家，A 国家内部两人编号一奇一偶就连边，B 内部同奇数都连边，同偶数都连边。</p>
+<p>A 和 B 之间可能有边。</p>
+<p>求最大团。</p>
+<p>看到最大团，我们考虑进行补图转化，也就是想办法求出最大独立集。</p>
+<p>考虑补图：</p>
+<p>对于 A补图：</p>
+<p>A 点的奇数点构成了一个团，偶数点构成一个团。</p>
+<p>对于 B补图：</p>
+<p>奇数点和偶数点构成了二分图。</p>
+<p>于是问题变成了在补图上找最大独立集。</p>
+<p>由于 A 补图有两个团，所以我们选择方案极其有限：一个都不选，从其中的一个团选出一个，两个团各选一个。</p>
+<p>设取出的这两个点分别是 $x,y$<br>我们在 B 补图中删去与这两点有边相连的 B 补图点，之后在 B 补图中剩余点跑最大独立集就可以了。</p>
+<p>为什么正确呢？</p>
+<p>首先最大独立集对于 B 补图一定是正确的。</p>
+<p>考虑带上 A 补图中的点。</p>
+<p>由于 A 补图中有两个团，所以同一个团中最多选出一个节点，才能保证不与其他点相连。</p>
+<p>每次选出 A 补图中的人就把 B 补图中相连的点删去，这保证了 B 补图中点不与 A 补图中点相连。</p>
+<p>所以这样建出的图是正确的，且他的原图所有点都互相连接。</p>
+<p>细节是双向边。</p>
+<p>注意这道题目中其实暗中规定好了左部点和右部点，应当直接默认奇数点是左部点，否则会多出一倍的常数。</p>
+<p>还需要一个优化。</p>
+<p>本题极度卡常，所以常规的匈牙利算法已经不足以满足我们的需求。</p>
+<p>为什么？</p>
+<p>可以发现每次找到一个节点准备进行增广时，都需要把 $vis$ 清空。</p>
+<p>效率很低。</p>
+<p>所以我们引入时间戳的概念来进行优化。</p>
+<p>具体实现看代码</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//#define LawrenceSivan</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">long</span> <span class="type">long</span> ll;</span><br><span class="line"><span class="keyword">typedef</span> <span class="type">unsigned</span> <span class="type">long</span> <span class="type">long</span> ull;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INF 0x3f3f3f3f</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> re register</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxn=<span class="number">3005</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> T,ans;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n1,n2,A[maxn],B[maxn],m; </span><br><span class="line"></span><br><span class="line"><span class="type">int</span> mp[maxn][maxn];</span><br><span class="line"></span><br><span class="line">vector &lt;<span class="type">int</span>&gt; Bmp[maxn];</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> vis[maxn],tim,match[maxn];</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> flag[maxn],t;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">dfs</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">unsigned</span> <span class="type">int</span> i=<span class="number">0</span>;i&lt;Bmp[x].<span class="built_in">size</span>();i++)&#123;</span><br><span class="line">		<span class="type">int</span> v=Bmp[x][i];</span><br><span class="line">		<span class="keyword">if</span>(vis[v]!=tim&amp;&amp;flag[v]==t)&#123;<span class="comment">//时间戳优化</span></span><br><span class="line">			vis[v]=tim;</span><br><span class="line">			<span class="keyword">if</span>(!match[v]||<span class="built_in">dfs</span>(match[v]))&#123;</span><br><span class="line">				match[v]=x;</span><br><span class="line">				<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">solve0</span><span class="params">()</span></span>&#123;<span class="comment">//如果一个都不选</span></span><br><span class="line">	<span class="type">int</span> res=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>;i&lt;=n2;i++)&#123;</span><br><span class="line">		<span class="keyword">if</span>(B[i]&amp;<span class="number">1</span>)&#123;<span class="comment">//定好左部点</span></span><br><span class="line">			tim++;<span class="comment">//时间戳优化</span></span><br><span class="line">			<span class="keyword">if</span>(<span class="built_in">dfs</span>(i))res++;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	res=n2-res;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">solve1</span><span class="params">()</span></span>&#123;<span class="comment">//如果只选一个</span></span><br><span class="line">	<span class="type">int</span> res=-INF;</span><br><span class="line">	<span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>;i&lt;=n1;i++)&#123;</span><br><span class="line">		t++;<span class="type">int</span> sum=<span class="number">0</span>,nn=<span class="number">0</span>;</span><br><span class="line">		<span class="built_in">memset</span>(match,<span class="number">0</span>,<span class="built_in">sizeof</span>(match));</span><br><span class="line">		<span class="keyword">for</span>(re <span class="type">int</span> j=<span class="number">1</span>;j&lt;=n2;j++)&#123;</span><br><span class="line">			<span class="keyword">if</span>(mp[i][j])flag[j]=t,nn++;<span class="comment">//删除B补图中相连的点</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span>(re <span class="type">int</span> j=<span class="number">1</span>;j&lt;=n2;j++)&#123;</span><br><span class="line">			<span class="keyword">if</span>(flag[j]==t&amp;&amp;(B[j]&amp;<span class="number">1</span>))&#123;</span><br><span class="line">				tim++;<span class="comment">//时间戳</span></span><br><span class="line">				<span class="keyword">if</span>(<span class="built_in">dfs</span>(j))sum++;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		res=<span class="built_in">max</span>(res,nn-sum<span class="number">+1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">solve2</span><span class="params">()</span></span>&#123;<span class="comment">//如果选两个</span></span><br><span class="line">	<span class="type">int</span> res=-INF;</span><br><span class="line">	<span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>;i&lt;=n1;i++)&#123;</span><br><span class="line">		<span class="keyword">for</span>(re <span class="type">int</span> j=i<span class="number">+1</span>;j&lt;=n1;j++)&#123;</span><br><span class="line">			<span class="keyword">if</span>((A[i]^A[j])&amp;<span class="number">1</span>)&#123;</span><br><span class="line">				t++;<span class="type">int</span> sum=<span class="number">0</span>,nn=<span class="number">0</span>;</span><br><span class="line">				<span class="built_in">memset</span>(match,<span class="number">0</span>,<span class="built_in">sizeof</span>(match));</span><br><span class="line">				<span class="keyword">for</span>(re <span class="type">int</span> k=<span class="number">1</span>;k&lt;=n2;k++)&#123;</span><br><span class="line">					<span class="keyword">if</span>(mp[i][k]&amp;&amp;mp[j][k])flag[k]=t,nn++;<span class="comment">//删除相连的点</span></span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">for</span>(re <span class="type">int</span> k=<span class="number">1</span>;k&lt;=n2;k++)&#123;</span><br><span class="line">					<span class="keyword">if</span>(flag[k]==t&amp;&amp;(B[k]&amp;<span class="number">1</span>))&#123;</span><br><span class="line">						tim++;<span class="comment">//时间戳</span></span><br><span class="line">						<span class="keyword">if</span>(<span class="built_in">dfs</span>(k))sum++;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">				res=<span class="built_in">max</span>(res,nn-sum<span class="number">+2</span>);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">calc</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> res=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span>(x)&#123;</span><br><span class="line">		res+=x&amp;<span class="number">1</span>;</span><br><span class="line">		x&gt;&gt;=<span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">read</span><span class="params">(T &amp;x)</span></span>&#123;</span><br><span class="line">    x=<span class="number">0</span>;T f=<span class="number">1</span>;<span class="type">char</span> ch=<span class="built_in">getchar</span>();</span><br><span class="line">    <span class="keyword">while</span> (!<span class="built_in">isdigit</span>(ch)) &#123;<span class="keyword">if</span>(ch==<span class="string">&#x27;-&#x27;</span>)f=<span class="number">-1</span>;ch=<span class="built_in">getchar</span>();&#125;</span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">isdigit</span>(ch))&#123;x=x*<span class="number">10</span>+(ch^<span class="number">48</span>);ch=<span class="built_in">getchar</span>();&#125;</span><br><span class="line">    x*=f;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">signed</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> LawrenceSivan</span></span><br><span class="line">    <span class="built_in">freopen</span>(<span class="string">&quot;aa.in&quot;</span>, <span class="string">&quot;r&quot;</span>, stdin);</span><br><span class="line">    <span class="built_in">freopen</span>(<span class="string">&quot;aa.out&quot;</span>, <span class="string">&quot;w&quot;</span>, stdout);</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">	<span class="built_in">read</span>(T);</span><br><span class="line">	<span class="keyword">while</span>(T--)&#123;</span><br><span class="line">		<span class="built_in">memset</span>(mp,<span class="number">0</span>,<span class="built_in">sizeof</span>(mp));ans=-INF;</span><br><span class="line">		<span class="built_in">read</span>(n1),<span class="built_in">read</span>(n2),<span class="built_in">read</span>(m);</span><br><span class="line">		<span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>;i&lt;=n1;i++)<span class="built_in">read</span>(A[i]);</span><br><span class="line">		<span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>;i&lt;=n2;i++)<span class="built_in">read</span>(B[i]);</span><br><span class="line">		<span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>,u,v;i&lt;=m;i++)&#123;</span><br><span class="line">			<span class="built_in">read</span>(u),<span class="built_in">read</span>(v);</span><br><span class="line">			mp[u][v]=mp[v][u]=<span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>;i&lt;=n2;i++)&#123;</span><br><span class="line">			<span class="keyword">if</span>(B[i]&amp;<span class="number">1</span>)&#123;</span><br><span class="line">				<span class="keyword">for</span>(re <span class="type">int</span> j=<span class="number">1</span>;j&lt;=n2;j++)&#123;</span><br><span class="line">					<span class="keyword">if</span>(!(B[j]&amp;<span class="number">1</span>)&amp;&amp;!(<span class="built_in">calc</span>(B[i]|B[j])&amp;<span class="number">1</span>))Bmp[i].<span class="built_in">push_back</span>(j),Bmp[j].<span class="built_in">push_back</span>(i);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		ans=<span class="built_in">max</span>(ans,<span class="built_in">solve0</span>());</span><br><span class="line">		ans=<span class="built_in">max</span>(ans,<span class="built_in">solve1</span>());</span><br><span class="line">		ans=<span class="built_in">max</span>(ans,<span class="built_in">solve2</span>());</span><br><span class="line">		</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,ans);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="DAG-的最小路径覆盖（多条链不能有公共点）"><a href="#DAG-的最小路径覆盖（多条链不能有公共点）" class="headerlink" title="DAG 的最小路径覆盖（多条链不能有公共点）"></a>DAG 的最小路径覆盖（多条链不能有公共点）</h3><p>给定一张 DAG ，要求用尽量少的不相交的简单路径，覆盖 DAG 的所有顶点，每个顶点恰好覆盖一次。</p>
+<p>将原来 DAG 中每一个点拆点，拆成 $x,x+n$ 两个点。</p>
+<p>以 $1-n$ 为左部点，$n+1-2\times n$ 为右部点，建立二分图，对于原图中每一条有向边 $(x,y)$ 在二分图左部点 $x$ 与右部点 $y+n$ 连边。</p>
+<p>这个二分图被称为原 DAG 的拆点二分图，记为 $G_2$ 。</p>
+<p><strong>定理</strong> </p>
+<p>DAG $G$ 的最小路径覆盖包含的路径条数 $&#x3D;$ $n-G_2$  的最大匹配数。</p>
+<p><strong>最小路径覆盖等于最大独立集</strong></p>
+<p><strong>证明</strong></p>
+<blockquote>
+<p>一开始每个点都是独立的一条路径，总共有 $n$ 条不相交路径。每次在二分图中找一条匹配边就相当于把两条路径合并成了一条，就是总路径数减少了 $1$ ，所以找到了几条匹配边，路径就减少了多少。于是最小路径覆盖包含的路径条数 $&#x3D;$ $n-G_2$  的最大匹配数</p>
+</blockquote>
+<h3 id="DAG-的最小链覆盖（多条链可以重叠）"><a href="#DAG-的最小链覆盖（多条链可以重叠）" class="headerlink" title="DAG 的最小链覆盖（多条链可以重叠）"></a>DAG 的最小链覆盖（多条链可以重叠）</h3><p>DAG 的最小链覆盖也被称为最小路径可重复点覆盖。</p>
+<p>考虑一个 DAG 上的两条相交路径</p>
+<p>_suppose_：</p>
+<p>路径 $a$ :  $…\rightarrow x\rightarrow p\rightarrow y \rightarrow …$</p>
+<p>路径 $b$ ： $…\rightarrow u\rightarrow p\rightarrow v\rightarrow…$</p>
+<p>他们有公共交点 $p$ 。</p>
+<p>为了防止相交我们可以在 $x\rightarrow y$ 直接连一条新边，这样就不用走同一条路了。</p>
+<p>于是我们首先使用 <em>floyd</em> 传递闭包得到新的 DAG $G’$ </p>
+<p>之后直接在 $G’$ 上跑最小路径覆盖就可以了。</p>
+<p><a href="https://www.luogu.com.cn/problem/P4589">P4589 [TJOI2018]智力竞赛</a></p>
+<p>观察题面，发现一个人如果要答题的话，可以选择一条链全部进行回答。</p>
+<p>由于贡献来自他和亲友团没有答到的题目中价值最小的。</p>
+<p>对于一道相同的题目，显然再答一次不会有任何多出的贡献。</p>
+<p>相当于对这张图进行最小链覆盖。</p>
+<p>首先进行 floyd 传递闭包。</p>
+<p>对于我们需要求出的没有被答到的题目最小价值最大，显然需要二分。</p>
+<p>每次检查一个 $mid$ ，把小于 $mid$ 的值放入新的邻接矩阵中，之后对这个新的邻接矩阵求解最小路径覆盖。</p>
+<p>最小路径覆盖等于最大独立集，最大独立集等于最小点覆盖的补集，最小点覆盖等于最大匹配。</p>
+<p>于是求出最大匹配之后，算出最大独立集，从而得出最小路径覆盖，再与 $n+1$ 个人进行比较，得出结论即可。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//#define LawrenceSivan</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">long</span> <span class="type">long</span> ll;</span><br><span class="line"><span class="keyword">typedef</span> <span class="type">unsigned</span> <span class="type">long</span> <span class="type">long</span> ull;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INF 0x3f3f3f3f</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> re register</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxn=<span class="number">1005</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n,m;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> val[maxn];</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> g[maxn][maxn],f[maxn][maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">floyd</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(re <span class="type">int</span> k=<span class="number">1</span>;k&lt;=m;k++)&#123;</span><br><span class="line">		<span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>;i&lt;=m;i++)&#123;</span><br><span class="line">			<span class="keyword">for</span>(re <span class="type">int</span> j=<span class="number">1</span>;j&lt;=m;j++)&#123;</span><br><span class="line">				g[i][j]|=g[i][k]&amp;g[k][j];</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> l=INF,r=-INF;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> match[maxn];</span><br><span class="line"></span><br><span class="line"><span class="type">bool</span> vis[maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">dfs</span><span class="params">(<span class="type">int</span> u)</span></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(re <span class="type">int</span> v=<span class="number">1</span>;v&lt;=m;v++)&#123;</span><br><span class="line">		<span class="keyword">if</span>(f[u][v]&amp;&amp;!vis[v])&#123;</span><br><span class="line">			vis[v]=<span class="literal">true</span>;</span><br><span class="line">			<span class="keyword">if</span>(!match[v]||<span class="built_in">dfs</span>(match[v]))&#123;</span><br><span class="line">				match[v]=u;</span><br><span class="line">				<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">bool</span> <span class="title">check</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">	<span class="built_in">memset</span>(f,<span class="number">0</span>,<span class="built_in">sizeof</span>(f));</span><br><span class="line">	<span class="built_in">memset</span>(match,<span class="number">0</span>,<span class="built_in">sizeof</span>(match));</span><br><span class="line">	<span class="type">int</span> cnt=<span class="number">0</span>,res=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>;i&lt;=m;i++)&#123;</span><br><span class="line">		<span class="keyword">for</span>(re <span class="type">int</span> j=<span class="number">1</span>;j&lt;=m;j++)&#123;</span><br><span class="line">			<span class="keyword">if</span>(val[i]&lt;x&amp;&amp;val[j]&lt;x)f[i][j]=g[i][j];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>;i&lt;=m;i++)<span class="keyword">if</span>(val[i]&lt;x)cnt++;</span><br><span class="line">	<span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>;i&lt;=m;i++)&#123;</span><br><span class="line">		<span class="built_in">memset</span>(vis,<span class="number">0</span>,<span class="built_in">sizeof</span>(vis));</span><br><span class="line">		<span class="keyword">if</span>(<span class="built_in">dfs</span>(i))res++;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> n<span class="number">+1</span>&gt;=cnt-res;<span class="comment">//还要包含小豆自己呢 </span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">read</span><span class="params">(T &amp;x)</span></span>&#123;</span><br><span class="line">    x=<span class="number">0</span>;T f=<span class="number">1</span>;<span class="type">char</span> ch=<span class="built_in">getchar</span>();</span><br><span class="line">    <span class="keyword">while</span> (!<span class="built_in">isdigit</span>(ch)) &#123;<span class="keyword">if</span>(ch==<span class="string">&#x27;-&#x27;</span>)f=<span class="number">-1</span>;ch=<span class="built_in">getchar</span>();&#125;</span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">isdigit</span>(ch))&#123;x=x*<span class="number">10</span>+(ch^<span class="number">48</span>);ch=<span class="built_in">getchar</span>();&#125;</span><br><span class="line">    x*=f;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">signed</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> LawrenceSivan</span></span><br><span class="line">    <span class="built_in">freopen</span>(<span class="string">&quot;aa.in&quot;</span>, <span class="string">&quot;r&quot;</span>, stdin);</span><br><span class="line">    <span class="built_in">freopen</span>(<span class="string">&quot;aa.out&quot;</span>, <span class="string">&quot;w&quot;</span>, stdout);</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">	<span class="built_in">read</span>(n),<span class="built_in">read</span>(m);</span><br><span class="line">	<span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>,k;i&lt;=m;i++)&#123;</span><br><span class="line">		<span class="built_in">read</span>(val[i]),<span class="built_in">read</span>(k);</span><br><span class="line">		l=<span class="built_in">min</span>(l,val[i]),r=<span class="built_in">max</span>(r,val[i]);</span><br><span class="line">		<span class="keyword">while</span>(k--)&#123;</span><br><span class="line">			<span class="type">int</span> a;</span><br><span class="line">			<span class="built_in">read</span>(a);</span><br><span class="line">			g[i][a]=<span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">floyd</span>();</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">if</span>(<span class="built_in">check</span>(r<span class="number">+1</span>))&#123;</span><br><span class="line">		<span class="built_in">puts</span>(<span class="string">&quot;AK&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">while</span>(l&lt;r)&#123;</span><br><span class="line">		<span class="type">int</span> mid=(l+r<span class="number">+1</span>)&gt;&gt;<span class="number">1</span>;</span><br><span class="line">		<span class="keyword">if</span>(<span class="built_in">check</span>(mid))l=mid;</span><br><span class="line">		<span class="keyword">else</span> r=mid<span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,l);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="二分图的最长反链"><a href="#二分图的最长反链" class="headerlink" title="二分图的最长反链"></a>二分图的最长反链</h3><p>最长反链：一张有向无环图的最长反链为一个集合 $ S\subseteq V$，满足对于 $S$ 中的任意两个不同的点 $u, v \in S(u \ne v)$，$u$ 不能到达 $v$，$v$ 也不能到达 $u$，且 $S$ 的大小尽量大。</p>
+<p><strong>Dilworth 定理</strong></p>
+<p>对于任意有限偏序集，其最长链中元素的数目必等于其最小长链划分中反链的数目。</p>
+<p>即最长反链的大小等于最小可重链覆盖大小。</p>
+<p><strong>最长反链 $&#x3D;$ 最小链覆盖</strong></p>
+<p>于是转化为求最小链覆盖。</p>
+<p>由于最小链覆盖可以转化成最小路径覆盖，于是最小路径覆盖等于最大独立集，而最大独立集是最小点覆盖的补集，最小点覆盖等于最大匹配。</p>
+<p>于是思路就理顺了，正常进行即可</p>
+<p><a href="https://www.luogu.com.cn/problem/P4298">P4298 [CTSC2008]祭祀</a></p>
+<p>首先进行 floyd 传递闭包，转化为最小路径覆盖问题。</p>
+<p>之后跑一次最大匹配，它的补集大小就是答案。</p>
+<p>本题还要求构造答案。</p>
+<p>首先需要构造最大独立集。</p>
+<p>构造最大独立集可以通过构造最小点覆盖，之后进行补集转化来实现。</p>
+<p>跑完最大匹配之后，对于每一个没有匹配的左部点，以他为起点进行一次尝试增广的 dfs 操作（必定会失败），过程中记录下经过的点。</p>
+<p>最后取出左部被标记的点且右部没有标记的点（最小点覆盖是需要取出左部没有标记的点与右部被标记的点的并集，但是由于我们构造的是其补集，所以左部被标记的点与右部没有被标记的点的交集）</p>
+<p>于是我们构造出了最大独立集。</p>
+<p>由最小路径覆盖等于最大独立集，相当于我们构造出了最小路径覆盖。</p>
+<p>由于我们已经进行了传递闭包，所以等价于我们构造出了最小链覆盖，也就是最长反链的方案。</p>
+<p>对于问题 $3$ ，要求我们满足最长反链最大的前提下，找到所有可能位置。</p>
+<p>考虑一个已经求出的最长反链，如果从最长反链中去除一个点，最长反链大小会减小 $1$ 。</p>
+<p>于是我们可以首先钦定一个点在最长反链里，之后我们删除和这个点有偏序关系的所有点，之后再求一次最长反链，并且判断最长反链长度是否比原来小 $1$，从而判断这个点在不在最长反链中。</p>
+<p>本题极好，一定要把思路理顺，代码并不难写。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//#define LawrenceSivan</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">long</span> <span class="type">long</span> ll;</span><br><span class="line"><span class="keyword">typedef</span> <span class="type">unsigned</span> <span class="type">long</span> <span class="type">long</span> ull;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INF 0x3f3f3f3f</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> re register</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> maxn=<span class="number">105</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n,m;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> mp[maxn][maxn];</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> match[maxn];</span><br><span class="line"></span><br><span class="line"><span class="type">bool</span> vis[maxn],del[maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">floyd</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(re <span class="type">int</span> k=<span class="number">1</span>;k&lt;=n;k++)</span><br><span class="line">        <span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)</span><br><span class="line">            <span class="keyword">for</span>(re <span class="type">int</span> j=<span class="number">1</span>;j&lt;=n;j++)</span><br><span class="line">                mp[i][j]|=mp[i][k]&amp;mp[k][j];</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> cnt1,cnt2,tmp;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">dfs</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(re <span class="type">int</span> y=<span class="number">1</span>;y&lt;=n;y++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(mp[x][y]&amp;&amp;!vis[y]&amp;&amp;!del[y])&#123;</span><br><span class="line">            vis[y]=<span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">if</span>(!match[y]||<span class="built_in">dfs</span>(match[y]))&#123;</span><br><span class="line">                match[y]=x;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">bool</span> flag[maxn][<span class="number">2</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">try_to_dfs</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">    flag[x][<span class="number">0</span>]=<span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">for</span>(re <span class="type">int</span> y=<span class="number">1</span>;y&lt;=n;y++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(mp[x][y]&amp;&amp;match[y]!=x&amp;&amp;!flag[y][<span class="number">1</span>])&#123;</span><br><span class="line">            flag[y][<span class="number">1</span>]=<span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">if</span>(match[y]!=<span class="number">0</span>)<span class="built_in">try_to_dfs</span>(match[y]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">bool</span> used[maxn];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">solve2</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)used[match[i]]=<span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">    	<span class="keyword">if</span>(!used[i])<span class="built_in">try_to_dfs</span>(i);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(!(!flag[i][<span class="number">0</span>]||flag[i][<span class="number">1</span>]))<span class="built_in">printf</span>(<span class="string">&quot;1&quot;</span>);<span class="keyword">else</span> <span class="built_in">printf</span>(<span class="string">&quot;0&quot;</span>);</span><br><span class="line">        <span class="comment">//或者可以写成  flag[i][0]&amp;&amp;!flag[i][1]</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">solve3</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        <span class="built_in">memset</span>(del,<span class="number">0</span>,<span class="built_in">sizeof</span>(del));</span><br><span class="line">        <span class="built_in">memset</span>(match,<span class="number">0</span>,<span class="built_in">sizeof</span>(match));</span><br><span class="line">        cnt2=<span class="number">0</span>,tmp=n;</span><br><span class="line">        <span class="keyword">for</span>(re <span class="type">int</span> j=<span class="number">1</span>;j&lt;=n;j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(mp[i][j]||mp[j][i]||i==j)del[j]=<span class="literal">true</span>,tmp--;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(re <span class="type">int</span> j=<span class="number">1</span>;j&lt;=n;j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(del[j])<span class="keyword">continue</span>;</span><br><span class="line">            <span class="built_in">memset</span>(vis,<span class="number">0</span>,<span class="built_in">sizeof</span>(vis));</span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">dfs</span>(j))cnt2++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d&quot;</span>,tmp-cnt2==n-cnt1<span class="number">-1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">read</span><span class="params">(T &amp;x)</span></span>&#123;</span><br><span class="line">    x=<span class="number">0</span>;T f=<span class="number">1</span>;<span class="type">char</span> ch=<span class="built_in">getchar</span>();</span><br><span class="line">    <span class="keyword">while</span> (!<span class="built_in">isdigit</span>(ch)) &#123;<span class="keyword">if</span>(ch==<span class="string">&#x27;-&#x27;</span>)f=<span class="number">-1</span>;ch=<span class="built_in">getchar</span>();&#125;</span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">isdigit</span>(ch))&#123;x=x*<span class="number">10</span>+(ch^<span class="number">48</span>);ch=<span class="built_in">getchar</span>();&#125;</span><br><span class="line">    x*=f;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> LawrenceSivan</span></span><br><span class="line">    <span class="built_in">freopen</span>(<span class="string">&quot;aa.in&quot;</span>, <span class="string">&quot;r&quot;</span>, stdin);</span><br><span class="line">    <span class="built_in">freopen</span>(<span class="string">&quot;aa.out&quot;</span>, <span class="string">&quot;w&quot;</span>, stdout);</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">    <span class="built_in">read</span>(n),<span class="built_in">read</span>(m);</span><br><span class="line">    <span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>,u,v;i&lt;=m;i++)&#123;</span><br><span class="line">        <span class="built_in">read</span>(u),<span class="built_in">read</span>(v);</span><br><span class="line">        mp[u][v]=<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">floyd</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(re <span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        <span class="built_in">memset</span>(vis,<span class="number">0</span>,<span class="built_in">sizeof</span>(vis));</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">dfs</span>(i))cnt1++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,n-cnt1);</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">solve2</span>();</span><br><span class="line"></span><br><span class="line">    <span class="built_in">solve3</span>();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="二分图的最小支配集"><a href="#二分图的最小支配集" class="headerlink" title="二分图的最小支配集"></a>二分图的最小支配集</h3><p>选出一个点集，每个点要么被选择，要么和被选择的点相连</p>
+<p>例题还没写，先咕着，写完再来补</p>
+<h3 id="二分图的必经边与可行边"><a href="#二分图的必经边与可行边" class="headerlink" title="二分图的必经边与可行边"></a>二分图的必经边与可行边</h3><p>先咕着，还没学会</p>
+
+        </div>
+        <!-- .entry-content -->
+        <div style="text-align:center; width: 100%" class="social-share share-mobile" data-disabled="diandian, tencent"></div>
+        <footer class="post-footer">
+          <div class="post-lincenses"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="nofollow"><i class="fa fa-creative-commons" aria-hidden="true"></i> 知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a></div>
+          <div class="post-tags">
+          </div>
+          <div class="post-share">
+            <div class="social-share sharehidden share-component"></div>
+            <i class="iconfont show-share icon-forward"></i>
+          </div>
+        </footer><!-- .entry-footer -->
+      </article>
+      <!-- #post-## -->
+      <div class="toc" style="background: none;"></div>
+      <section class="post-squares nextprev">
+        
+          
+            <div class="post-nepre half previous">
+          
+            <a href="/2021/07/27/2021%20%E4%BA%8C%E5%8D%97%E6%96%B0%E7%94%9F%E6%8A%A5%E5%88%B0%E5%BF%85%E5%A4%87%E7%89%A9%E5%93%81%E6%8C%87%E5%8D%97~%EF%BC%88%E7%AC%AC%E4%BA%8C%E7%89%88%EF%BC%89/" rel="prev">
+              <div class="background">
+                <img class="lazyload" src="https://gcore.jsdelivr.net/gh/honjun/cdn@1.6/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://i.loli.net/2021/07/27/1E4wmtCrDlcbAGF.jpg" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://i.loli.net/2021/07/27/1E4wmtCrDlcbAGF.jpg">
+              </div>
+              <span class="label">
+              Previous Post</span>
+              <div class="info">
+                <h3>
+                2021 二南新生报到必备物品指南~（第二版）</h3>
+                <hr>
+              </div>
+            </a>
+          </div>
+        
+        
+          
+            <div class="post-nepre half next">
+          
+            <a href="/2021/07/04/%E5%86%B3%E7%AD%96%E5%8D%95%E8%B0%83%E6%80%A7%E5%B0%8F%E7%BB%93/" rel="next">
+              <div class="background">
+                <img class="lazyload" src="https://gcore.jsdelivr.net/gh/honjun/cdn@1.6/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://i.loli.net/2021/07/05/e6SDai3InYtyQKo.jpg" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://i.loli.net/2021/07/05/e6SDai3InYtyQKo.jpg">
+              </div>
+              <span class="label">
+              Next Post</span>
+              <div class="info">
+                <h3>
+                决策单调性小结</h3>
+                <hr>
+              </div>
+            </a>
+          </div>
+        
+      </section>
+      
+  <div id="vcomments"></div>
+  <script>
+    window.onload = function(){
+        var valine = new Valine();
+        valine.init({
+          el: '#vcomments',
+          appId: "dIwCuws5ndk9l6KNX62Yp2v6-gzGzoHsz",
+          appKey: "5KBdadEbfMMamh1KsfIlVDqD",
+          path: window.location.pathname,
+          placeholder: "总之岁月漫长，然而值得等待"
+        })
+    }
+  </script>
+  
+  
+  
+      <section class="author-profile">
+        <div class="info" itemprop="author" itemscope="" itemtype="https://schema.org/Person">
+          <a href="https://lawrencesivan.github.io/" class="profile gravatar"><img src="https://gcore.jsdelivr.net/gh/LawrenceSivan/cdn@master/pictures/avatar.jpg" itemprop="image" alt="LawrenceSivan" height="70" width="70"></a>
+          <div class="meta">
+            <span class="title">Author</span>
+            <h3 itemprop="name">
+            <a href="https://lawrencesivan.github.io/" itemprop="url" rel="author">LawrenceSivan</a>
+            </h3>
+          </div>
+        </div>
+        <hr>
+        <p><i class="iconfont icon-write"></i></p>
+      </section>
+    </main><!-- #main -->
+  </div><!-- #primary -->
+</div>
+
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML"></script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+
+
+    </div>    
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..."/>
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            // PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+    <!-- <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2024 LawrenceSivan<br>
+      powered_by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer> -->
+<footer id="colophon" class="site-footer" role="contentinfo">
+  <div class="site-info">
+    <div class="footertext">
+      <div class="img-preload">
+        <img src="https://gcore.jsdelivr.net/gh/honjun/cdn@1.6/img/other/wordpress-rotating-ball-o.svg">
+        <img src="https://gcore.jsdelivr.net/gh/honjun/cdn@1.6/img/other/disqus-preloader.svg">
+      </div>
+      <p style="color: #666666;">&copy 2021</p>
+    </div>
+    <div class="footer-device">
+    <p style="font-family: 'Ubuntu', sans-serif;">
+        <span style="color: #b9b9b9;">Theme <a href="https://github.com/honjun/hexo-theme-sakura" target="_blank" style="color: #b9b9b9;;text-decoration: underline dotted rgba(0, 0, 0, .1);">Sakura</a> <i class="iconfont icon-sakura rotating" style="color: #ffc0cb;display:inline-block"></i> by <a href="https://2heng.xin/" target="_blank" style="color: #b9b9b9;;text-decoration: underline dotted rgba(0, 0, 0, .1);">Mashiro</a>&<a href="https://www.hojun.cn/" target="_blank" style="color: #b9b9b9;;text-decoration: underline dotted rgba(0, 0, 0, .1);">Hojun</a>, Powered by Hexo, Hosted by Coding Pages</a>
+        </span>
+      </p>
+    </div>
+  </div><!-- .site-info -->
+</footer>
+
+
+
+<!-- <script src="/js/tocbot.js"></script> -->
+<script type="text/javascript" src="https://gcore.jsdelivr.net/gh/LawrenceSivan/cdn@master/js/lib.min.js"></script>
+<script src="https://gcore.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script type="text/javascript" src="/js/InsightSearch.js"></script>
+<script type="text/javascript" src="https://gcore.jsdelivr.net/gh/LawrenceSivan/cdn@master/js/jquery.fancybox.min.js"></script>
+<script type="text/javascript" src="https://gcore.jsdelivr.net/gh/LawrenceSivan/cdn@master/js/zoom.min.js"></script>
+<script type="text/javascript" src="https://gcore.jsdelivr.net/gh/LawrenceSivan/cdn@master/js/sakura-app.js"></script>
+
+<script src="https://gcore.jsdelivr.net/gh/LawrenceSivan/cdn@master/js/Valine.min.js"></script>
+<script src="https://gcore.jsdelivr.net/npm/leancloud-storage@3/dist/av-min.js"></script>
+
+<script src="https://gcore.jsdelivr.net/gh/LawrenceSivan/cdn@master/js/botui.js"></script>
+<!-- 不蒜子 网页计数器 -->
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script> -->
+<script type="text/javascript">
+/* <![CDATA[ */
+if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+  var Poi = {"pjax":"0","movies":{"url": "https://link.jscdn.cn/sharepoint/aHR0cHM6Ly96aGVuZ3poZW5nLW15LnNoYXJlcG9pbnQuY29tLzp2Oi9nL3BlcnNvbmFsL25vbl9mcmllZF9jaGlwc19hY3NobF9tZS9FWkIybW5DdWc3SkFqNGJld3lFQmp3SUJDZWwtQVJJcnZ5aHd5a0RHakhONlRnP2U9d2FUUkpr.mp3","name":"video.mp4","live":"close"},"windowheight":"fixed","codelamp":"close","ajaxurl":"","order":"asc","formpostion":"bottom"};
+} else {
+  var Poi = {"pjax":"0","movies":{"url": "https://link.jscdn.cn/sharepoint/aHR0cHM6Ly96aGVuZ3poZW5nLW15LnNoYXJlcG9pbnQuY29tLzp2Oi9nL3BlcnNvbmFsL25vbl9mcmllZF9jaGlwc19hY3NobF9tZS9FWkIybW5DdWc3SkFqNGJld3lFQmp3SUJDZWwtQVJJcnZ5aHd5a0RHakhONlRnP2U9d2FUUkpr.mp3","name":"video.mp4","live":"open"},"windowheight":"auto","codelamp":"close","ajaxurl":"","order":"asc","formpostion":"bottom"};
+}
+/* ]]> */
+
+</script>
+<script>
+$(document).ready(function() {
+  if ($(".toc").length > 0 && document.body.clientWidth > 1200) {
+    if ($(".pattern-center").length > 0) { //有图的情况
+      tocbot.init({
+          // Where to render the table of contents.
+          tocSelector: '.toc', // 放置目录的容器
+          // Where to grab the headings to build the table of contents.
+          contentSelector: '.entry-content', // 正文内容所在
+          // Which headings to grab inside of the contentSelector element.
+          scrollSmooth: true,
+          headingSelector: 'h1, h2, h3, h4, h5', // 需要索引的标题级别
+          headingsOffset: -400,
+          scrollSmoothOffset: -85
+      });
+    } else {
+      tocbot.init({
+          // Where to render the table of contents.
+          tocSelector: '.toc', // 放置目录的容器
+          // Where to grab the headings to build the table of contents.
+          contentSelector: '.entry-content', // 正文内容所在
+          // Which headings to grab inside of the contentSelector element.
+          scrollSmooth: true,
+          headingSelector: 'h1, h2, h3, h4, h5', // 需要索引的标题级别
+          headingsOffset: -85,
+          scrollSmoothOffset: -85
+      });
+    }
+    var offsetTop = $('.toc').offset().top - 95;
+    window.onscroll = function() {
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+      if (scrollTop >= offsetTop) {
+        $('.toc').addClass('toc-fixed');
+      } else {
+        $('.toc').removeClass('toc-fixed');
+      }
+    }
+  }
+});
+</script>
+
+    <div class="openNav no-select" style="height: 50px;">
+      <div class="iconflat no-select" style="width: 50px; height: 50px;">
+        <div class="icon"></div>
+      </div>
+      <div class="site-branding search-form-submit">
+        <i class="iconfont js-toggle-search iconsearch icon-search"></i>
+      </div>
+    </div>
+  </section>
+  <div id="mo-nav" class="">
+  <div class="m-avatar">
+    <img src="https://gcore.jsdelivr.net/gh/LawrenceSivan/cdn@master/pictures/avatar.jpg">
+  </div>
+  <p style="text-align: center; color: #333; font-weight: 900; font-family: 'Ubuntu', sans-serif; letter-spacing: 1.5px">LawrenceSivan</p>
+  <p style="text-align: center; word-spacing: 20px;">
+    
+      
+        <a href="https://github.com/LawrenceSivan" class="fa fa-github" target="_blank" style="color: #333; margin-left:20px"></a>
+      
+        <a href="https://weibo.com/7464138878/profile?topnav=1&wvr=6" class="fa fa-weibo" target="_blank" style="color: #dd4b39; margin-left:20px"></a>
+      
+        <a href="https://user.qzone.qq.com/1641374235/infocenter" class="fa fa-qq" target="_blank" style="color: #25c6fe; margin-left:20px"></a>
+      
+    
+  </p>
+  <ul id="menu-new-1" class="menu">
+    
+      <li>
+        <a href="https://lawrencesivan.github.io/">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-fort-awesome faa-shake" aria-hidden="true"></i>
+            首页
+          </span>
+        </a>
+        
+      </li>
+    
+      <li>
+        <a href="/archives">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-archive faa-shake" aria-hidden="true"></i>
+            归档
+          </span>
+        </a>
+        
+          <ul class="sub-menu">
+            
+              <li>
+                <a href="/categories/%E6%8A%80%E6%9C%AF/">
+                  <i class="fa fa-code" aria-hidden="true"></i>
+                  技术
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/%E7%94%9F%E6%B4%BB/">
+                  <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                  生活
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/%E4%BB%A3%E7%A0%81/">
+                  <i class="fa fa-cloud-download" aria-hidden="true"></i>
+                  代码
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/%E9%9A%8F%E6%83%B3/">
+                  <i class="fa fa-commenting-o" aria-hidden="true"></i>
+                  随想
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/%E8%BD%AC%E8%BD%BD/">
+                  <i class="fa fa-book" aria-hidden="true"></i>
+                  转载
+                </a>
+              </li>
+            
+          </ul>
+        
+      </li>
+    
+      <li>
+        <a href="javascript:;">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-list-ul faa-vertical" aria-hidden="true"></i>
+            清单
+          </span>
+        </a>
+        
+          <ul class="sub-menu">
+            
+              <li>
+                <a href="/tags/%E6%82%A6%E8%AF%BB/">
+                  <i class="fa fa-th-list faa-bounce" aria-hidden="true"></i>
+                  书单
+                </a>
+              </li>
+            
+              <li>
+                <a href="/bangumi/">
+                  <i class="fa fa-film faa-vertical" aria-hidden="true"></i>
+                  番组
+                </a>
+              </li>
+            
+              <li>
+                <a href="/music/">
+                  <i class="fa fa-headphones" aria-hidden="true"></i>
+                  歌单
+                </a>
+              </li>
+            
+              <li>
+                <a href="/tags/%E5%9B%BE%E9%9B%86/">
+                  <i class="fa fa-photo" aria-hidden="true"></i>
+                  图集
+                </a>
+              </li>
+            
+          </ul>
+        
+      </li>
+    
+      <li>
+        <a href="/analytics/">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-line-chart" aria-hidden="true"></i>
+            统计
+          </span>
+        </a>
+        
+      </li>
+    
+      <li>
+        <a href="/tags/">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-tag" aria-hidden="true"></i>
+            标签
+          </span>
+        </a>
+        
+      </li>
+    
+      <li>
+        <a href="/categories/">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-bookmark" aria-hidden="true"></i>
+            分类
+          </span>
+        </a>
+        
+      </li>
+    
+      <li>
+        <a href="/comment/">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-pencil-square-o faa-tada" aria-hidden="true"></i>
+            留言板
+          </span>
+        </a>
+        
+      </li>
+    
+      <li>
+        <a href="/links/">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-link faa-shake" aria-hidden="true"></i>
+            友人帐
+          </span>
+        </a>
+        
+      </li>
+    
+      <li>
+        <a href="/">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-leaf faa-wrench" aria-hidden="true"></i>
+            关于
+          </span>
+        </a>
+        
+          <ul class="sub-menu">
+            
+              <li>
+                <a href="/about/">
+                  <i class="fa fa-meetup" aria-hidden="true"></i>
+                  我？
+                </a>
+              </li>
+            
+              <li>
+                <a href="/theme-sakura/">
+                  <i class="fa iconfont icon-sakura" aria-hidden="true"></i>
+                  主题
+                </a>
+              </li>
+            
+              <li>
+                <a href="/lab/">
+                  <i class="fa fa-cogs" aria-hidden="true"></i>
+                  Lab
+                </a>
+              </li>
+            
+              <li>
+                <a href="/client/">
+                  <i class="fa fa-android faa-vertical" aria-hidden="true"></i>
+                  APP
+                </a>
+              </li>
+            
+              <li>
+                <a href="/atom.xml">
+                  <i class="fa fa-rss faa-pulse" aria-hidden="true"></i>
+                  RSS
+                </a>
+              </li>
+            
+          </ul>
+        
+      </li>
+    
+  </ul>
+  <p style="text-align: center; font-size: 13px; color: #b9b9b9;">&copy 2021 hexo-sakura</p>
+</div>
+<button onclick="topFunction()" class="mobile-cd-top" id="moblieGoTop" title="Go to top" style="display: none;"><i class="fa fa-chevron-up" aria-hidden="true"></i></button>
+  <link rel="stylesheet" href="https://gcore.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+<script src="https://gcore.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+<!-- require MetingJS -->
+<script src="https://gcore.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+<style>
+  .aplayer .aplayer-lrc {
+    height: 35px;
+  }
+  .aplayer .aplayer-lrc p{
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 18px !important;
+  }
+  .aplayer .aplayer-lrc p.aplayer-lrc-current{
+    color: #FF1493;
+  }
+  .aplayer.aplayer-narrow .aplayer-body{
+    left: -66px !important;
+  }
+  .aplayer.aplayer-fixed .aplayer-lrc {
+    display: none;
+  }
+  .aplayer .aplayer-lrc.aplayer-lrc-hide {
+      display:none !important;
+  }
+  .aplayer.aplayer-fixed .lrc-show {
+    display: block;
+    background: rgba(255, 255, 255, 0.8);
+  }
+</style>
+<meting-js
+
+>
+</meting-js>
+<script>
+  $(function(){
+    $('body').on('click', '.aplayer', function(){
+      if($('.aplayer-button').hasClass('aplayer-play')) {
+        $('.aplayer-lrc').removeClass('lrc-show');
+      } else {
+        $('.aplayer-lrc').addClass('lrc-show');
+      }
+    })
+  });
+</script>
+  <script src="//instant.page/3.0.0" type="module" defer integrity="sha384-OeDn4XE77tdHo8pGtE1apMPmAipjoxUQ++eeJa6EtJCfHlvijigWiJpD7VDPWXV1"></script>
+
+  <!-- <script>
+    // (function () {
+        
+    //   })()
+
+    (function () {
+      $('#spinner').fadeOut();
+    })()
+  </script> -->
+  <script src="//gcore.jsdelivr.net/gh/Natsuki-Kaede/Fly-Engine@latest/fly-engine.js" type="module"></script>
+</body>
+</html>
