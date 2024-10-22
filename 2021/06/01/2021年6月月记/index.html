@@ -1152,7 +1152,7 @@
 <p>浪费生命。</p>
 <h2 id="6-月-22-日"><a href="#6-月-22-日" class="headerlink" title="$6$ 月 $22$ 日"></a>$6$ 月 $22$ 日</h2><p>又干了傻逼事。</p>
 <p>给大家欣赏一个迷惑行为：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre class=" language-hljs cpp"><span class="hljs-keyword">inline</span> <span class="hljs-type">bool</span> <span class="hljs-keyword">operator</span> &lt; (<span class="hljs-type">const</span> node &amp;a)<span class="hljs-type">const</span>&#123;<br>    <span class="hljs-keyword"><code class="language-hljs cpp"><span class="hljs-keyword">inline</span> <span class="hljs-type">bool</span> <span class="hljs-keyword">operator</span> &lt; (<span class="hljs-type">const</span> node &amp;a)<span class="hljs-type">const</span>&#123;<br>    <span class="hljs-keyword">return</span> id^a.id?sum<a.sum:id<a.id;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">inline</span> <span class="type">bool</span> <span class="keyword">operator</span> &lt; (<span class="type">const</span> node &amp;a)<span class="type">const</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> id^a.id?sum&lt;a.sum:id&lt;a.id;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>因为这个傻逼错误调了很久甚至就要捶打自己了。</p>
 <p>气愤。</p>
